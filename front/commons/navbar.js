@@ -20,6 +20,7 @@ function create_navbar(content) {
     ele.style.width = '100%';
     ele.style.background = 'rgba(230,230,230,0.8)';
     ele.style.filter = 'blur(15px)';
+    ele.style.position = 'relative';
     ele.style.zIndex = 5;
     //navbar.style.filter = 'blur(8px)';
 

@@ -1,8 +1,18 @@
 function create_buttonImg(button, img_path) {
     img_ = document.createElement('img');
-    button.appendChild(img_);
+    //button.appendChild(img_);
     img_.src = img_path;
     img_.style.maxHeight = "100%";
+
+
+    img_.style.position = 'absolute';
+    img_.style.top = button.style.top;
+    img_.style.left = button.style.left;
+    img_.style.marginTop = button.style.marginTop;
+    img_.style.marginLeft = button.style.marginLeft;
+    img_.style.zIndex = button.style.zIndex - 1;
+
+    return img_;
 }
 var navbar = document.getElementById('navbar');
 console.log(navbar);
@@ -24,8 +34,8 @@ function create_logo_hotcorner() {
     logo_bttn.style.backgroundColor = 'rgba(0,0,0,0)'; //fixing default bg color
     logo_bttn.style.border = '0px'; //fixing default border
     logo_bttn.style.borderRadius = '50%';
-    logo_bttn.style.zIndex = corner_zIndex_base+3;
-    logo_bttn.style.cursor ="pointer";
+    logo_bttn.style.zIndex = corner_zIndex_base + 4;
+    logo_bttn.style.cursor = "pointer";
     //logo_bttn.style.boxShadow = 'rgba(255, 36, 48, 0.8) 0px 0px 0px 18px';
     // on hover/ mouse over -> increase size
 
@@ -50,14 +60,41 @@ function create_logo_hotcorner() {
             }
         }, 300);
     }*/
-    //window.setTimeout(mouse0ut, 100);
+    function hotcorner_processState() {
+        console.log('processing state');
+        console.log(this);
+        if (logo_bttn_mouse0vered) {
+            // play animation
+            console.log('play animations');
+            if (!drop_bttn_isactive) {
+                // make drop_bttn visible
+                drop_bttn.style.display = 'block';
+            }
+        } else {
+            if (!drop_bttn_isactive) {
+                if (!drop_bttn_mouse0vered) {
+                    // make drop_bttn invisible
+                    drop_bttn.style.display = 'none';
+                }
+            }
+
+        }
+    }
+
+
     // with mouse
-    logo_bttn.addEventListener('mouseenter', function() {
-        hotcorner_state = true;
+    logo_bttn.addEventListener('mouseenter', function () {
+        logo_bttn_mouse0vered = true;
+        console.log('logo_bttn mouse-over');
+        hotcorner_processState();
 
     });
-    logo_bttn.addEventListener('mouseleave', function() {
-        hotcorner_state = false;
+    logo_bttn.addEventListener('mouseleave', function () {
+        setTimeout(function () {
+            logo_bttn_mouse0vered = false;
+            console.log('logo_bttn mouse-out');
+            hotcorner_processState();
+        }, 200);
     });
     //with touch
     /*
@@ -75,9 +112,12 @@ function create_logo_hotcorner() {
     //ele.style.opacity = '0';
 
     // TODO create logo image
-    create_buttonImg(logo_bttn, "/images/final_4.png");
-    logo_bttn.querySelector('img').zIndex = logo_bttn.style.zIndex+1;
-    logo_bttn.querySelector('img').style.borderRadius = '50%';
+    logo_bttn_img = create_buttonImg(
+        button = logo_bttn,
+        img_path = "/images/final_4.png"
+    );
+    navbar.appendChild(logo_bttn_img);
+    logo_bttn_img.style.borderRadius = '50%';
 
     // TODO create round div with zindex below img bttn and put boxshadow to it
     var hider = document.createElement('div');
@@ -86,21 +126,21 @@ function create_logo_hotcorner() {
     navbar.appendChild(hider);
     hider.style.position = 'absolute';
     hider.style.height = navbar.style.height;
-    hider.style.width = hider.style.height ;
+    hider.style.width = hider.style.height;
     hider.style.top = logo_bttn.style.top;
     hider.style.left = logo_bttn.style.left;
     hider.style.margin = logo_bttn.style.margin;
 
-    hider.children[0].style.zIndex = corner_zIndex_base+1;
+    hider.children[0].style.zIndex = corner_zIndex_base + 1;
     hider.children[0].style.position = 'absolute';
     hider.children[0].style.height = navbar.style.height;
-    hider.children[0].style.width = hider.style.height ;
+    hider.children[0].style.width = hider.style.height;
     hider.children[0].style.borderRadius = '50%';
     hider.children[0].style.boxShadow = 'rgba(249, 249, 249, 0.95) 0px 0px 0px 17px';
     hider.children[1].style.zIndex = corner_zIndex_base;
     hider.children[1].style.position = 'absolute';
     hider.children[1].style.height = navbar.style.height;
-    hider.children[1].style.width = hider.style.height ;
+    hider.children[1].style.width = hider.style.height;
     hider.children[1].style.borderRadius = '50%';
     hider.children[1].style.boxShadow = 'rgba(255, 36, 48, 0.8) 0px 0px 0px 18px';
 
@@ -123,15 +163,17 @@ function create_logo_hotcorner() {
         drop_bttn.style.padding = '0px'; //fixing default padding
         drop_bttn.style.border = '0px'; //fixing default border
         drop_bttn.style.cursor = 'crosshair';
-        drop_bttn.style.zIndex = corner_zIndex_base+2;
+        drop_bttn.style.zIndex = corner_zIndex_base + 2;
+        drop_bttn.style.display = 'none';
         drop_bttn.addEventListener('mouseenter', function () {
-            console.log('drop_bttn mouse overed');
-            drop_bttn_isactive = true;
-            hotcorner_state = true;
+            console.log('drop_bttn mouse-over');
+            drop_bttn_mouse0vered = true;
+            hotcorner_processState();
         });
         drop_bttn.addEventListener('mouseleave', function () {
-            console.log('drop_bttn mouse unovered');
-            drop_bttn_isactive = false;
+            console.log('drop_bttn mouse-out');
+            drop_bttn_mouse0vered = false;
+            hotcorner_processState();
             //mouse0ut();
         });
         //drop_bttn.style.backgroundImage = "url('/images/final_4.png')";
@@ -140,20 +182,13 @@ function create_logo_hotcorner() {
         drop_bttn.style.left = (parseFloat(navbar.style.height) - parseFloat(drop_bttn.style.top)).toString() + 'px';
     }
 
-    var hotcorner_state = false;
+    //var hotcorner_state = false;
 
-    var logo_bttn_isactive = false;
+    var logo_bttn_mouse0vered = false;
+    var drop_bttn_mouse0vered = false;
     var drop_bttn_isactive = false;
-    
-    //ele = document.createElement('img');
-    //navbar.querySelector('button').appendChild(ele);
-    // default style
-    //ele.src = "/images/final_4.png";
-    //ele.style.maxHeight = "100%";
-    //ele.href = "#home";
-    //ele.className = "active";
-    //ele.style.boxShadow = '0px 0px 4px 20px rgba(0,0,0,0.05)';
-    // on hover
+
+
 
     logo_bttn.onclick = function () {
         window.open(URL = home_url, nam = "_self")
