@@ -1,5 +1,5 @@
 var navbar_loaded = false;
-function create_navbar(content) {
+function create_navbar() {
 
     var navbar = document.createElement("div");
     document.body.appendChild(navbar);
@@ -30,8 +30,7 @@ function create_navbar(content) {
     });
     navbar_loaded = true;
 
-    //navbar.style.marginTop
-    content.style.marginTop = (parseFloat(navbar.style.height) + 30).toString()+'px';
+    //content.style.marginTop = (parseFloat(navbar.style.height) + 30).toString()+'px';
     
-    document.body.appendChild(content);
+    //document.body.appendChild(content);
 }

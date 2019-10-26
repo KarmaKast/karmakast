@@ -14,11 +14,12 @@ function create_buttonImg(button, img_path) {
 
     return img_;
 }
-var navbar = document.getElementById('navbar');
-console.log(navbar);
-var corner_zIndex_base = 6;
+
 
 function create_logo_hotcorner() {
+    var navbar = document.getElementById('navbar');
+    //console.log(navbar);
+    var corner_zIndex_base = 6;
     var logo_bttn = document.createElement('button');
     navbar.appendChild(logo_bttn);
     // default
@@ -40,13 +41,13 @@ function create_logo_hotcorner() {
     // on hover/ mouse over -> increase size
 
     /*function mouse0ut() {
-        console.log(drop_bttn_isactive);
+        //console.log(drop_bttn_isactive);
         setTimeout(function () {
-            console.log(drop_bttn_isactive);
+            //console.log(drop_bttn_isactive);
             if (drop_bttn_isactive != true) {
                 currHeight = parseFloat(navbar.children[1].style.height);
                 newHeight = original_size_logo_bttn;
-                //console.log(newHeight);
+                ////console.log(newHeight);
                 // if drop_bttn is being hovered do not execute this
                 navbar.querySelector('button').style.height = newHeight.toString() + 'px';
                 navbar.querySelector('button').style.width = newHeight.toString() + 'px';
@@ -61,11 +62,11 @@ function create_logo_hotcorner() {
         }, 300);
     }*/
     function hotcorner_processState() {
-        console.log('processing state');
-        console.log(this);
+        //console.log('processing state');
+        //console.log(this);
         if (logo_bttn_mouse0vered) {
             // play animation
-            console.log('play animations');
+            //console.log('play animations');
             if (!drop_bttn_isactive) {
                 // make drop_bttn visible
                 drop_bttn.style.display = 'block';
@@ -83,19 +84,26 @@ function create_logo_hotcorner() {
 
 
     // with mouse
-    logo_bttn.addEventListener('mouseenter', function () {
-        logo_bttn_mouse0vered = true;
-        console.log('logo_bttn mouse-over');
-        hotcorner_processState();
-
-    });
-    logo_bttn.addEventListener('mouseleave', function () {
-        setTimeout(function () {
-            logo_bttn_mouse0vered = false;
-            console.log('logo_bttn mouse-out');
+    if (get_mode() == 'desktop') {
+        logo_bttn.addEventListener('mouseenter', function () {
+            logo_bttn_mouse0vered = true;
+            //console.log('logo_bttn mouse-over');
             hotcorner_processState();
-        }, 200);
-    });
+
+        });
+
+        logo_bttn.addEventListener('mouseleave', function () {
+            setTimeout(function () {
+                logo_bttn_mouse0vered = false;
+                //console.log('logo_bttn mouse-out');
+                hotcorner_processState();
+            }, 200);
+        });
+    } else {
+        // check if mouse events exist.
+
+        // if yes remove them
+    }
     //with touch
     /*
     press logo to load main page
@@ -106,7 +114,7 @@ function create_logo_hotcorner() {
     /*
     currHeight = parseFloat(ele.style.height);
     newHeight = currHeight + currHeight*20/100;
-    console.log(newHeight);
+    //console.log(newHeight);
     ele.style.height = '420%';*/
     //ele.style.boxShadow = '0px 0px 4px 20px rgba(254,37,48,0.8)';
     //ele.style.opacity = '0';
@@ -150,7 +158,7 @@ function create_logo_hotcorner() {
 
     if (drop_bttn == null) {
         // create a rectangular button to be placed at the bottom of the logo on top of it
-        console.log(navbar.querySelector('button'));
+        //console.log(navbar.querySelector('button'));
         drop_bttn = document.createElement('button');
         navbar.appendChild(drop_bttn);
         drop_bttn.id = 'dropdown_button_01';
@@ -166,12 +174,12 @@ function create_logo_hotcorner() {
         drop_bttn.style.zIndex = corner_zIndex_base + 2;
         drop_bttn.style.display = 'none';
         drop_bttn.addEventListener('mouseenter', function () {
-            console.log('drop_bttn mouse-over');
+            //console.log('drop_bttn mouse-over');
             drop_bttn_mouse0vered = true;
             hotcorner_processState();
         });
         drop_bttn.addEventListener('mouseleave', function () {
-            console.log('drop_bttn mouse-out');
+            //console.log('drop_bttn mouse-out');
             drop_bttn_mouse0vered = false;
             hotcorner_processState();
             //mouse0ut();
@@ -194,7 +202,7 @@ function create_logo_hotcorner() {
         window.open(URL = home_url, nam = "_self")
     };
     drop_bttn.onclick = function () {
-        console.log('small button clicked');
+        //console.log('small button clicked');
     }
 
 }

@@ -1,19 +1,97 @@
 var home_url = "";
 
-function loadScript(src, callback){
+function loadScript(src, callback) {
     let script = document.createElement('script');
     script.src = src;
     script.onload = () => callback(script);
     document.head.append(script);
 }
 
+var media_modes = ['auto', 'mobile', 'tablet', 'desktop'];
+var media_modes_bools = {
+    'auto': false,
+    'mobile': true,
+    'tablet': true,
+    'desktop': true
+};
+var force_set_mode = media_modes[0];
+
+function mode_listener(x) {
+    if (x.matches) { // If media query matches
+        if (x.media.match('1268')) {
+            media_modes_bools['desktop'] = true;
+            //document.body.style.backgroundColor = "yellow";
+        }
+        if (x.media.match('768')) {
+            media_modes_bools['tablet'] = true;
+            //document.body.style.backgroundColor = "pink";
+        }
+        if (x.media.match('320')) {
+            media_modes_bools['mobile'] = true;
+            //document.body.style.backgroundColor = "red";
+        }
+        
+    } else {
+        if (x.media.match('1268')) {
+            media_modes_bools['desktop'] = false;
+            //document.body.style.backgroundColor = "yellow";
+        }
+        if (x.media.match('768')) {
+            media_modes_bools['tablet'] = false;
+            //document.body.style.backgroundColor = "pink";
+        }
+        if (x.media.match('320')) {
+            media_modes_bools['mobile'] = false;
+            //document.body.style.backgroundColor = "red";
+        }
+    }
+}
+
+var mode_min_320 = window.matchMedia("(min-width: 320px)");
+var mode_min_768 = window.matchMedia("(min-width: 768px)");
+var mode_min_1268 = window.matchMedia("(min-width: 1268px)");
+mode_min_320.addListener(mode_listener);
+mode_min_768.addListener(mode_listener);
+mode_min_1268.addListener(mode_listener); 
+
+function get_mode() {
+    if (force_set_mode == 'auto') {
+        var mode = null;
+        if (media_modes_bools['tablet']==true) {
+            if(media_modes_bools['desktop']==true) {
+                return 'desktop';
+            }else{
+                return 'tablet';
+            }
+        }else{
+            return 'mobile';
+        }
+        //return mode;
+    } else {
+        return force_set_mode;
+    }
+}
+
 function load_index() {
+    // TODO check device
+    
+    mode_listener(mode_min_320);
+    mode_listener(mode_min_768);
+    mode_listener(mode_min_1268);
+    console.log(get_mode());
+
+    var meta = document.createElement('meta');
+    document.head.appendChild(meta);
+    meta.setAttribute('charset', 'utf-8');
+    meta.setAttribute('content', 'width=device-width, initial-scale=1.0');
+    meta.name = 'viewport';
     document.body.style.margin = "0px";
     home_url = window.location.href;
-    console.log(home_url);
+    //console.log(home_url);
     //create_navbar()
-    loadScript('/front/commons/navbar.js', function() {
-        create_navbar(contentdiv);
+    loadScript('/front/commons/navbar.js', function () {
+        //create_navbar(contentdiv);
+        create_navbar();
     });
 }
 
@@ -82,4 +160,3 @@ Vivamus dui odio, rhoncus sed ex quis, accumsan blandit felis. Class aptent taci
 <p>
 Cras mattis vestibulum quam a interdum. Proin ac ligula suscipit, auctor felis sed, mollis tellus. Integer vitae ligula at libero pharetra porttitor ac dignissim mauris. Aliquam eu porttitor libero, vel porttitor urna. Cras lacinia est ac neque fringilla rutrum. Duis tristique vel nisi eget eleifend. Phasellus eget neque sed felis vehicula ornare. Maecenas porta ornare mi. Vivamus ut orci leo. Donec non vehicula magna. Etiam quam orci, pulvinar sed metus at, vestibulum dignissim nibh. Suspendisse eleifend faucibus libero, sed venenatis lectus. Proin luctus justo at lectus pharetra rutrum. Pellentesque nisl augue, vestibulum in dui vel, posuere bibendum risus. Morbi libero mi, semper sed nisl ac, finibus vehicula tortor. Pellentesque nec nisl eu enim vehicula semper.
 </p></div>`
-
