@@ -1,8 +1,18 @@
 function create_buttonImg(button, img_path) {
     img_ = document.createElement('img');
-    button.appendChild(img_);
+    //button.appendChild(img_);
     img_.src = img_path;
     img_.style.maxHeight = "100%";
+
+    
+    img_.style.position = 'absolute';
+    img_.style.top = button.style.top;
+    img_.style.left = button.style.left;
+    img_.style.marginTop = button.style.marginTop;
+    img_.style.marginLeft = button.style.marginLeft;
+    img_.style.zIndex = button.style.zIndex-1;
+
+    return img_;
 }
 var navbar = document.getElementById('navbar');
 console.log(navbar);
@@ -24,7 +34,7 @@ function create_logo_hotcorner() {
     logo_bttn.style.backgroundColor = 'rgba(0,0,0,0)'; //fixing default bg color
     logo_bttn.style.border = '0px'; //fixing default border
     logo_bttn.style.borderRadius = '50%';
-    logo_bttn.style.zIndex = corner_zIndex_base+3;
+    logo_bttn.style.zIndex = corner_zIndex_base+4;
     logo_bttn.style.cursor ="pointer";
     //logo_bttn.style.boxShadow = 'rgba(255, 36, 48, 0.8) 0px 0px 0px 18px';
     // on hover/ mouse over -> increase size
@@ -75,9 +85,12 @@ function create_logo_hotcorner() {
     //ele.style.opacity = '0';
 
     // TODO create logo image
-    create_buttonImg(logo_bttn, "/images/final_4.png");
-    logo_bttn.querySelector('img').zIndex = logo_bttn.style.zIndex+1;
-    logo_bttn.querySelector('img').style.borderRadius = '50%';
+    logo_bttn_img = create_buttonImg(
+        button = logo_bttn, 
+        img_path = "/images/final_4.png"
+        );
+    navbar.appendChild(logo_bttn_img);
+    logo_bttn_img.style.borderRadius = '50%';
 
     // TODO create round div with zindex below img bttn and put boxshadow to it
     var hider = document.createElement('div');
@@ -145,15 +158,7 @@ function create_logo_hotcorner() {
     var logo_bttn_isactive = false;
     var drop_bttn_isactive = false;
     
-    //ele = document.createElement('img');
-    //navbar.querySelector('button').appendChild(ele);
-    // default style
-    //ele.src = "/images/final_4.png";
-    //ele.style.maxHeight = "100%";
-    //ele.href = "#home";
-    //ele.className = "active";
-    //ele.style.boxShadow = '0px 0px 4px 20px rgba(0,0,0,0.05)';
-    // on hover
+    
 
     logo_bttn.onclick = function () {
         window.open(URL = home_url, nam = "_self")
