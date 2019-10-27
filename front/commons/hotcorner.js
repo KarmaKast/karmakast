@@ -37,6 +37,19 @@ function create_logo_hotcorner() {
     logo_bttn.style.borderRadius = '50%';
     logo_bttn.style.zIndex = corner_zIndex_base + 4;
     logo_bttn.style.cursor = "pointer";
+    // TODO remove outline when clicking the button
+    logo_bttn.style.display = 'block';
+    //logo_bttn.onfocus = () => { logo_bttn.style.outline = "none";};
+    gStyle.innerHTML = gStyle.innerHTML+`
+    button:focus {
+        outline: none;
+    }
+    button::-moz-focus-inner {
+        border: 0;
+    }
+    `;
+    
+    //logo_bttn.style[]
     //logo_bttn.style.boxShadow = 'rgba(255, 36, 48, 0.8) 0px 0px 0px 18px';
     // on hover/ mouse over -> increase size
 
@@ -120,12 +133,13 @@ function create_logo_hotcorner() {
     //ele.style.opacity = '0';
 
     // TODO create logo image
-    logo_bttn_img = create_buttonImg(
+    var logo_bttn_img = create_buttonImg(
         button = logo_bttn,
         img_path = "/images/final_4.png"
     );
     navbar.appendChild(logo_bttn_img);
     logo_bttn_img.style.borderRadius = '50%';
+    //logo_bttn_img.style.pointerEvents = 'none';
 
     // TODO create round div with zindex below img bttn and put boxshadow to it
     var hider = document.createElement('div');

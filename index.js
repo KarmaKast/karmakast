@@ -1,4 +1,7 @@
 var home_url = "";
+var gStyle = document.createElement('style');
+gStyle.id = 'gStyle'; //page global style
+document.head.appendChild(gStyle);
 
 function loadScript(src, callback) {
     let script = document.createElement('script');
@@ -78,7 +81,7 @@ function load_index() {
     mode_listener(mode_min_320);
     mode_listener(mode_min_768);
     mode_listener(mode_min_1268);
-    console.log(get_mode());
+    //console.log(get_mode());
 
     var meta = document.createElement('meta');
     document.head.appendChild(meta);
