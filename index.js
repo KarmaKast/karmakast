@@ -3,84 +3,25 @@ var gStyle = document.createElement('style');
 gStyle.id = 'gStyle'; //page global style
 document.head.appendChild(gStyle);
 
-function loadScript(src, callback) {
-    let script = document.createElement('script');
-    script.src = src;
-    script.onload = () => callback(script);
-    document.head.append(script);
-}
 
-var media_modes = ['auto', 'mobile', 'tablet', 'desktop'];
-var media_modes_bools = {
-    'auto': false,
-    'mobile': true,
-    'tablet': true,
-    'desktop': true
-};
-var force_set_mode = media_modes[0];
-
-function mode_listener(x) {
-    if (x.matches) { // If media query matches
-        if (x.media.match('1268')) {
-            media_modes_bools['desktop'] = true;
-            //document.body.style.backgroundColor = "yellow";
-        }
-        if (x.media.match('768')) {
-            media_modes_bools['tablet'] = true;
-            //document.body.style.backgroundColor = "pink";
-        }
-        if (x.media.match('320')) {
-            media_modes_bools['mobile'] = true;
-            //document.body.style.backgroundColor = "red";
-        }
-        
-    } else {
-        if (x.media.match('1268')) {
-            media_modes_bools['desktop'] = false;
-            //document.body.style.backgroundColor = "yellow";
-        }
-        if (x.media.match('768')) {
-            media_modes_bools['tablet'] = false;
-            //document.body.style.backgroundColor = "pink";
-        }
-        if (x.media.match('320')) {
-            media_modes_bools['mobile'] = false;
-            //document.body.style.backgroundColor = "red";
-        }
-    }
-}
-
-var mode_min_320 = window.matchMedia("(min-width: 320px)");
-var mode_min_768 = window.matchMedia("(min-width: 768px)");
-var mode_min_1268 = window.matchMedia("(min-width: 1268px)");
-mode_min_320.addListener(mode_listener);
-mode_min_768.addListener(mode_listener);
-mode_min_1268.addListener(mode_listener); 
-
-function get_mode() {
-    if (force_set_mode == 'auto') {
-        var mode = null;
-        if (media_modes_bools['tablet']==true) {
-            if(media_modes_bools['desktop']==true) {
-                return 'desktop';
-            }else{
-                return 'tablet';
-            }
-        }else{
-            return 'mobile';
-        }
-        //return mode;
-    } else {
-        return force_set_mode;
-    }
-}
 
 function load_index() {
     // TODO check device
     
-    mode_listener(mode_min_320);
-    mode_listener(mode_min_768);
-    mode_listener(mode_min_1268);
+    loadScript('/front/commons/responsive.js', () => {
+        setup_listeners();
+        mode_listener(mode_min_320);
+        mode_listener(mode_min_768);
+        mode_listener(mode_min_1024);
+        get_mode();
+    })
+
+    
+    
+    /*responsive_worker.onmessage = (msg) => {
+        console.log('message received from worker !!!');
+        console.log(msg);
+    }*/
     //console.log(get_mode());
 
     var meta = document.createElement('meta');
@@ -96,6 +37,24 @@ function load_index() {
         //create_navbar(contentdiv);
         create_navbar();
     });
+    var version_div = document.createElement('div');
+    document.body.appendChild(version_div);
+    version_div.id = 'version_div';
+    version_div.style.position = 'absolute';
+    version_div.style.top = '0px';
+    version_div.style.right = '0px';
+    version_div.style.height = '30px';
+    version_div.style.width = '50px';
+    version_div.style.backgroundColor = 'rgba(0,0,0,0)';
+    version_div.innerHTML = `
+        <p style='color:rgb(150,150,150)' >
+            ${'dev: 0.0.2'}
+        </p>
+    `;
+    version_div.style.zIndex = 20;
+    //version_div.children[0].style.textEmphasisColor = 'rgb(200,200,200)';
+
+    
 }
 
 var contentdiv = document.createElement('div');
