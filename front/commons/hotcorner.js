@@ -89,12 +89,13 @@ function create_logo_hotcorner() {
         //console.log('processing state');
         //console.log(this);
         if (mode == 'desktop') {
-            if (logo_bttn_mouse0vered) {
+            if (logo_bttn_mouse0ver) {
                 // play animation
                 //console.log('play animations');
                 if (!drop_bttn_isactive) {
                     // make drop_bttn visible
                     drop_bttn.style.display = 'block';
+                    //document.body.style.backgroundColor = 'rgb(100,100,100)';
                 }
             } else {
                 if (!drop_bttn_isactive) {
@@ -122,6 +123,7 @@ function create_logo_hotcorner() {
             }*/
             if (logo_bttn_touchmoved) {
                 hotcorner.style.left = (parseFloat(logo_bttn_touchmoved_locs.pageX) - parseFloat(logo_bttn_touchmoved_locs.pageX * 0.8)) + 'px';
+                //document.body.style.backgroundColor = 'rgb(100,100,100)';
             }
             if (!logo_bttn_touchstart) {
                 hotcorner.style.left = '0px';
@@ -134,57 +136,52 @@ function create_logo_hotcorner() {
     // with mouse
 
     logo_bttn.addEventListener('mouseenter', function () {
-        if (get_mode() == 'desktop') {
-            logo_bttn_mouse0vered = true;
-            //console.log('logo_bttn mouse-over');
-            hotcorner_processState('desktop');
-        }
+        //document.body.style.backgroundColor = 'rgb(100,100,100)';
+        logo_bttn_mouse0ver = true;
+        //console.log('logo_bttn mouse-over');
+        hotcorner_processState(curr_mode);
 
     });
 
     logo_bttn.addEventListener('mouseleave', function () {
-        if (get_mode() == 'desktop') {
-            setTimeout(function () {
-                logo_bttn_mouse0vered = false;
-                //console.log('logo_bttn mouse-out');
-                hotcorner_processState('desktop');
-            }, 200);
-        }
+        //document.body.style.backgroundColor = 'rgb(100,100,100)';
+        setTimeout(function () {
+            logo_bttn_mouse0ver = false;
+            console.log('logo_bttn mouse-out');
+            hotcorner_processState(curr_mode);
+        }, 200);
     });
     // check if mouse events exist.
     // if yes remove them
     // assume mobile
     logo_bttn.addEventListener('touchstart', function () {
-        if (get_mode() == 'mobile') {
-            logo_bttn_touchstart = true;
-            //console.log('logo_bttn mouse-over');
-            hotcorner_processState('mobile');
-            //setTimeout(() => {
-            //    hotcorner_processState('mobile')
-            //}, 300);
-        }
+        //document.body.style.backgroundColor = 'rgb(100,100,100)';
+        logo_bttn_touchstart = true;
+        //console.log('logo_bttn mouse-over');
+        hotcorner_processState(curr_mode);
+        //setTimeout(() => {
+        //    hotcorner_processState('mobile')
+        //}, 300);
 
     });
     logo_bttn.addEventListener('touchend', function () {
-        if (get_mode() == 'mobile') {
-            //setTimeout(function () {
-            logo_bttn_touchstart = false;
-            logo_bttn_touchmoved = false;
+        //document.body.style.backgroundColor = 'rgb(100,100,100)';
+        //setTimeout(function () {
+        logo_bttn_touchstart = false;
+        logo_bttn_touchmoved = false;
 
-            //console.log('logo_bttn mouse-out');
-            hotcorner_processState('mobile');
-            //}, 200);
-        }
+        //console.log('logo_bttn mouse-out');
+        hotcorner_processState(curr_mode);
+        //}, 200);
     });
     logo_bttn.addEventListener('touchmove', function (ev) {
-        if (get_mode() == 'mobile') {
-            //setTimeout(function () {
-            logo_bttn_touchmoved = true;
-            logo_bttn_touchmoved_locs = ev.targetTouches[0]; // add deceleration 
-            //console.log('logo_bttn mouse-out');
-            hotcorner_processState('mobile');
-            //}, 200);
-        }
+        //document.body.style.backgroundColor = 'rgb(100,100,100)';
+        //setTimeout(function () {
+        logo_bttn_touchmoved = true;
+        logo_bttn_touchmoved_locs = ev.targetTouches[0]; // add deceleration 
+        //console.log('logo_bttn mouse-out');
+        hotcorner_processState(curr_mode);
+        //}, 200);
     });
 
     //with touch
@@ -223,9 +220,9 @@ function create_logo_hotcorner() {
     slider_base.style.height = navbar.style.height;
     console.log('navbar client width');
     console.log(navbar.clientWidth);
-    slider_base.style.width = navbar.clientWidth+'px';
+    slider_base.style.width = navbar.clientWidth + 'px';
     slider_base.style.top = logo_bttn.style.top;
-    slider_base.style.left = (parseFloat(logo_bttn.clientWidth)-parseFloat(navbar.clientWidth)).toString()+'px';
+    slider_base.style.left = (parseFloat(logo_bttn.clientWidth) - parseFloat(navbar.clientWidth)).toString() + 'px';
     slider_base.style.margin = logo_bttn.style.margin;
     //hider.style.backgroundColor = 'red'; //remove
 
@@ -249,16 +246,16 @@ function create_logo_hotcorner() {
 
     slider_base.children[2].style.zIndex = corner_zIndex_base + 2;
     slider_base.children[2].style.position = 'absolute';
-    slider_base.children[2].style.right = (parseFloat(navbar.clientHeight)+parseFloat(hotcorner.style.marginLeft)-5)+'px';
+    slider_base.children[2].style.right = (parseFloat(navbar.clientHeight) + parseFloat(hotcorner.style.marginLeft) - 5) + 'px';
     slider_base.children[2].style.height = navbar.style.height;
     slider_base.children[2].style.width = navbar.style.width;
     slider_base.children[2].style.borderRadius = '0px';
     slider_base.children[2].style.backgroundColor = 'rgba(249, 249, 249, 1)';
     slider_base.children[2].style.boxShadow = 'rgba(249, 249, 249, 1) 0px 0px 0px 7px';
 
-    slider_base.children[3].style.zIndex = corner_zIndex_base ;
+    slider_base.children[3].style.zIndex = corner_zIndex_base;
     slider_base.children[3].style.position = 'absolute';
-    slider_base.children[3].style.right = (parseFloat(navbar.clientHeight)+parseFloat(hotcorner.style.marginLeft))+'px';
+    slider_base.children[3].style.right = (parseFloat(navbar.clientHeight) + parseFloat(hotcorner.style.marginLeft)) + 'px';
     slider_base.children[3].style.height = navbar.style.height;
     slider_base.children[3].style.width = navbar.style.width;
     slider_base.children[3].style.borderRadius = '0px';
@@ -267,7 +264,7 @@ function create_logo_hotcorner() {
 
     // TODO show release version in the slider
     // TODO (later) square/rectable >  bottom half release version top half settings
-    var slider_inside_nav = document.createElement('nav'); 
+    var slider_inside_nav = document.createElement('nav');
     hotcorner.appendChild(slider_inside_nav);
 
     var drop_bttn = null;
@@ -280,11 +277,11 @@ function create_logo_hotcorner() {
         drop_bttn.id = 'dropdown_button_01';
         drop_bttn = navbar.querySelector('#dropdown_button_01');
         drop_bttn.style.position = 'absolute';
-        drop_bttn.style.width = navbar.clientHeight+'px';
+        drop_bttn.style.width = navbar.clientHeight + 'px';
         drop_bttn.style.height = drop_bttn.style.width;
 
         drop_bttn.style.top = 'opx';
-        drop_bttn.style.left = (parseFloat(logo_bttn.clientWidth)-25).toString() + 'px';
+        drop_bttn.style.left = (parseFloat(logo_bttn.clientWidth) - 25).toString() + 'px';
 
         drop_bttn.style.borderRadius = '50% 50% 50% 50%';
         drop_bttn.style.backgroundColor = 'rgba(0,0,0,0.5)';
@@ -311,33 +308,25 @@ function create_logo_hotcorner() {
 
         drop_bttn.addEventListener('mouseenter', function () {
             //console.log('drop_bttn mouse-over');
-            if (get_mode() == 'desktop') {
-                drop_bttn_mouse0vered = true;
-                hotcorner_processState('desktop');
-            }
+            drop_bttn_mouse0vered = true;
+            hotcorner_processState(curr_mode);
         });
         drop_bttn.addEventListener('mouseleave', function () {
             //console.log('drop_bttn mouse-out');
-            if (get_mode() == 'desktop') {
-                drop_bttn_mouse0vered = false;
-                hotcorner_processState('desktop');
-            }
+            drop_bttn_mouse0vered = false;
+            hotcorner_processState(curr_mode);
             //mouse0ut();
         });
         // assume mobile
         drop_bttn.addEventListener('touchstart', function () {
             //console.log('drop_bttn mouse-over');
-            if (get_mode() == 'mobile') {
-                drop_bttn_touchstart = true;
-                hotcorner_processState('mobile');
-            }
+            drop_bttn_touchstart = true;
+            hotcorner_processState(curr_mode);
         });
         drop_bttn.addEventListener('touchend', function () {
             //console.log('drop_bttn mouse-out');
-            if (get_mode() == 'mobile') {
-                drop_bttn_touchstart = false;
-                hotcorner_processState('mobile');
-            }
+            drop_bttn_touchstart = false;
+            hotcorner_processState(curr_mode);
             //mouse0ut();
         });
 
@@ -348,12 +337,14 @@ function create_logo_hotcorner() {
 
     //var hotcorner_state = false;
 
-    var logo_bttn_mouse0vered = false;
+    var logo_bttn_mouse0ver = false;
     var logo_bttn_touchstart = false;
-    var drop_bttn_mouse0vered = false;
-    var drop_bttn_touchstart = false;
     var logo_bttn_touchend = false;
     var logo_bttn_touchmoved = false;
+    var log_bttn_mousedrag = false;
+
+    var drop_bttn_mouse0vered = false;
+    var drop_bttn_touchstart = false;
     var drop_bttn_isactive = false; // weather the navbar is expanded or not
 
 
