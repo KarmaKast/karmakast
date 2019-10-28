@@ -48,7 +48,7 @@ function load_index() {
     version_div.style.backgroundColor = 'rgba(0,0,0,0)';
     version_div.innerHTML = `
         <p style='color:rgb(150,150,150)' >
-            ${'dev: 0.0.2'}
+            ${'dev: 0.0.3'}
         </p>
     `;
     version_div.style.zIndex = 20;
