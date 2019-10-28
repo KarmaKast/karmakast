@@ -5,7 +5,7 @@ function create_navbar() {
     document.body.appendChild(navbar);
 
     navbar.id = 'navbar';
-    navbar.style.height = '50px';
+    navbar.style.height = '60px';
     navbar.style.width = '100%';
     //navbar.style.background ='rgba(230,230,230,0.8)';
     navbar.style.position = "fixed";
@@ -18,8 +18,8 @@ function create_navbar() {
     navbar.appendChild(ele);
     ele.style.height = '100%';
     ele.style.width = '100%';
-    ele.style.background = 'rgba(230,230,230,0.8)';
-    ele.style.filter = 'blur(15px)';
+    ele.style.background = 'rgba(240,240,240,0.9)';
+    //ele.style.filter = 'blur(4px)';
     ele.style.position = 'relative';
     ele.style.zIndex = 5;
     //navbar.style.filter = 'blur(8px)';
@@ -29,7 +29,7 @@ function create_navbar() {
         create_logo_hotcorner();
     });
     navbar_loaded = true;
-
+     
     //content.style.marginTop = (parseFloat(navbar.style.height) + 30).toString()+'px';
     
     //document.body.appendChild(content);

@@ -20,23 +20,47 @@ function create_logo_hotcorner() {
     var navbar = document.getElementById('navbar');
     //console.log(navbar);
     var corner_zIndex_base = 6;
+    var hotcorner = document.createElement('div');
+    hotcorner.id = 'hotcorner';
+    hotcorner.style.position = 'absolute';
+    hotcorner.style.height = navbar.style.height;
+    hotcorner.style.width = navbar.style.height;
+    hotcorner.style.top = '0px';
+    hotcorner.style.left = '0px';
+    hotcorner.style.margin = '3px 0px 0px 3px';
+    //hotcorner.style.pointerEvents = 'none';
+    navbar.appendChild(hotcorner);
+
     var logo_bttn = document.createElement('button');
-    navbar.appendChild(logo_bttn);
+    hotcorner.appendChild(logo_bttn);
     // default
     logo_bttn.id = 'logo_button';
     logo_bttn.style.position = 'absolute';
     logo_bttn.style.top = '0px';
-    logo_bttn.style.height = navbar.style.height;
-    logo_bttn.style.width = navbar.style.height;
+    logo_bttn.style.height = hotcorner.style.height;
+    logo_bttn.style.width = hotcorner.style.height;
     //ele.style.maxHeight = "100%";
     //ele.style.maxWidth = navbar.style.height;
     logo_bttn.style.padding = '0px'; //fixing default padding
-    logo_bttn.style.margin = '3px 0px 0px 3px';
+    //logo_bttn.style.margin = '3px 0px 0px 3px';
     logo_bttn.style.backgroundColor = 'rgba(0,0,0,0)'; //fixing default bg color
     logo_bttn.style.border = '0px'; //fixing default border
     logo_bttn.style.borderRadius = '50%';
-    logo_bttn.style.zIndex = corner_zIndex_base + 4;
+    logo_bttn.style.zIndex = corner_zIndex_base + 6;
     logo_bttn.style.cursor = "pointer";
+    // TODO remove outline when clicking the button
+    logo_bttn.style.display = 'block';
+    //logo_bttn.onfocus = () => { logo_bttn.style.outline = "none";};
+    gStyle.innerHTML = gStyle.innerHTML + `
+    button:focus {
+        outline: none;
+    }
+    button::-moz-focus-inner {
+        border: 0;
+    }
+    `;
+
+    //logo_bttn.style[]
     //logo_bttn.style.boxShadow = 'rgba(255, 36, 48, 0.8) 0px 0px 0px 18px';
     // on hover/ mouse over -> increase size
 
@@ -61,49 +85,108 @@ function create_logo_hotcorner() {
             }
         }, 300);
     }*/
-    function hotcorner_processState() {
+    function hotcorner_processState(mode) {
         //console.log('processing state');
         //console.log(this);
-        if (logo_bttn_mouse0vered) {
-            // play animation
-            //console.log('play animations');
-            if (!drop_bttn_isactive) {
-                // make drop_bttn visible
-                drop_bttn.style.display = 'block';
+        if (mode == 'desktop') {
+            if (logo_bttn_mouse0vered) {
+                // play animation
+                //console.log('play animations');
+                if (!drop_bttn_isactive) {
+                    // make drop_bttn visible
+                    drop_bttn.style.display = 'block';
+                }
+            } else {
+                if (!drop_bttn_isactive) {
+                    if (!drop_bttn_mouse0vered) {
+                        // make drop_bttn invisible
+                        drop_bttn.style.display = 'none';
+                    }
+                }
+
             }
         } else {
-            if (!drop_bttn_isactive) {
-                if (!drop_bttn_mouse0vered) {
-                    // make drop_bttn invisible
-                    drop_bttn.style.display = 'none';
-                }
-            }
+            //assume mobile
 
+            // if touch only-> count as a press
+            // if hold
+            //      if drag
+            // if drag
+            //if (logo_bttn_touchstart) {
+            //document.body.style.backgroundColor = 'rgb(0,50,100)';
+            // check for drag
+            /*
+            if (logo_bttn_touchmoved) {
+                //document.body.style.backgroundColor = 'rgb(0,50,100)';
+                hotcorner.style.left = logo_bttn_touchmoved_locs.pageX + 'px';
+            }*/
+            if (logo_bttn_touchmoved) {
+                hotcorner.style.left = (parseFloat(logo_bttn_touchmoved_locs.pageX) - parseFloat(logo_bttn_touchmoved_locs.pageX * 0.8)) + 'px';
+            }
+            if (!logo_bttn_touchstart) {
+                hotcorner.style.left = '0px';
+                // open dropdown
+            }
         }
     }
 
 
     // with mouse
-    if (get_mode() == 'desktop') {
-        logo_bttn.addEventListener('mouseenter', function () {
+
+    logo_bttn.addEventListener('mouseenter', function () {
+        if (get_mode() == 'desktop') {
             logo_bttn_mouse0vered = true;
             //console.log('logo_bttn mouse-over');
-            hotcorner_processState();
+            hotcorner_processState('desktop');
+        }
 
-        });
+    });
 
-        logo_bttn.addEventListener('mouseleave', function () {
+    logo_bttn.addEventListener('mouseleave', function () {
+        if (get_mode() == 'desktop') {
             setTimeout(function () {
                 logo_bttn_mouse0vered = false;
                 //console.log('logo_bttn mouse-out');
-                hotcorner_processState();
+                hotcorner_processState('desktop');
             }, 200);
-        });
-    } else {
-        // check if mouse events exist.
+        }
+    });
+    // check if mouse events exist.
+    // if yes remove them
+    // assume mobile
+    logo_bttn.addEventListener('touchstart', function () {
+        if (get_mode() == 'mobile') {
+            logo_bttn_touchstart = true;
+            //console.log('logo_bttn mouse-over');
+            hotcorner_processState('mobile');
+            //setTimeout(() => {
+            //    hotcorner_processState('mobile')
+            //}, 300);
+        }
 
-        // if yes remove them
-    }
+    });
+    logo_bttn.addEventListener('touchend', function () {
+        if (get_mode() == 'mobile') {
+            //setTimeout(function () {
+            logo_bttn_touchstart = false;
+            logo_bttn_touchmoved = false;
+
+            //console.log('logo_bttn mouse-out');
+            hotcorner_processState('mobile');
+            //}, 200);
+        }
+    });
+    logo_bttn.addEventListener('touchmove', function (ev) {
+        if (get_mode() == 'mobile') {
+            //setTimeout(function () {
+            logo_bttn_touchmoved = true;
+            logo_bttn_touchmoved_locs = ev.targetTouches[0]; // add deceleration 
+            //console.log('logo_bttn mouse-out');
+            hotcorner_processState('mobile');
+            //}, 200);
+        }
+    });
+
     //with touch
     /*
     press logo to load main page
@@ -120,39 +203,72 @@ function create_logo_hotcorner() {
     //ele.style.opacity = '0';
 
     // TODO create logo image
-    logo_bttn_img = create_buttonImg(
+    var logo_bttn_img = create_buttonImg(
         button = logo_bttn,
         img_path = "/images/final_4.png"
     );
-    navbar.appendChild(logo_bttn_img);
+    hotcorner.appendChild(logo_bttn_img);
     logo_bttn_img.style.borderRadius = '50%';
+    //logo_bttn_img.style.pointerEvents = 'none';
 
     // TODO create round div with zindex below img bttn and put boxshadow to it
-    var hider = document.createElement('div');
-    hider.appendChild(document.createElement('div'));
-    hider.appendChild(document.createElement('div'));
-    navbar.appendChild(hider);
-    hider.style.position = 'absolute';
-    hider.style.height = navbar.style.height;
-    hider.style.width = hider.style.height;
-    hider.style.top = logo_bttn.style.top;
-    hider.style.left = logo_bttn.style.left;
-    hider.style.margin = logo_bttn.style.margin;
+    var slider_base = document.createElement('div');
+    slider_base.appendChild(document.createElement('div'));
+    slider_base.appendChild(document.createElement('div'));
+    slider_base.appendChild(document.createElement('div'));
+    slider_base.appendChild(document.createElement('div'));
+    hotcorner.appendChild(slider_base);
+    slider_base.id = 'hider';
+    slider_base.style.position = 'absolute';
+    slider_base.style.height = navbar.style.height;
+    console.log('navbar client width');
+    console.log(navbar.clientWidth);
+    slider_base.style.width = navbar.clientWidth+'px';
+    slider_base.style.top = logo_bttn.style.top;
+    slider_base.style.left = (parseFloat(logo_bttn.clientWidth)-parseFloat(navbar.clientWidth)).toString()+'px';
+    slider_base.style.margin = logo_bttn.style.margin;
+    //hider.style.backgroundColor = 'red'; //remove
 
-    hider.children[0].style.zIndex = corner_zIndex_base + 1;
-    hider.children[0].style.position = 'absolute';
-    hider.children[0].style.height = navbar.style.height;
-    hider.children[0].style.width = hider.style.height;
-    hider.children[0].style.borderRadius = '50%';
-    hider.children[0].style.boxShadow = 'rgba(249, 249, 249, 0.95) 0px 0px 0px 17px';
-    hider.children[1].style.zIndex = corner_zIndex_base;
-    hider.children[1].style.position = 'absolute';
-    hider.children[1].style.height = navbar.style.height;
-    hider.children[1].style.width = hider.style.height;
-    hider.children[1].style.borderRadius = '50%';
-    hider.children[1].style.boxShadow = 'rgba(255, 36, 48, 0.8) 0px 0px 0px 18px';
+    slider_base.children[0].style.zIndex = corner_zIndex_base + 3;
+    slider_base.children[0].style.position = 'absolute';
+    slider_base.children[0].style.right = '0px';
+    slider_base.children[0].style.height = navbar.style.height;
+    slider_base.children[0].style.width = navbar.style.height;
+    slider_base.children[0].style.borderRadius = '0% 50% 50% 0%';
+    slider_base.children[0].style.backgroundColor = 'rgba(249, 249, 249, 1)';
+    slider_base.children[0].style.boxShadow = 'rgba(249, 249, 249, 1) 0px 0px 0px 7px';
 
-    //navbar.querySelector('button').querySelector('img').style.boxShadow = 'rgba(249, 249, 249, 0.8) 0px 0px 0px 17px';
+    slider_base.children[1].style.zIndex = corner_zIndex_base + 1;
+    slider_base.children[1].style.position = 'absolute';
+    slider_base.children[1].style.right = '0px';
+    slider_base.children[1].style.height = navbar.style.height;
+    slider_base.children[1].style.width = navbar.style.height;
+    slider_base.children[1].style.borderRadius = slider_base.children[0].style.borderRadius;
+    slider_base.children[1].style.backgroundColor = 'rgba(255, 36, 48, 1)';
+    slider_base.children[1].style.boxShadow = 'rgba(255, 36, 48, 1) 0px 0px 0px 8px';
+
+    slider_base.children[2].style.zIndex = corner_zIndex_base + 2;
+    slider_base.children[2].style.position = 'absolute';
+    slider_base.children[2].style.right = (parseFloat(navbar.clientHeight)+parseFloat(hotcorner.style.marginLeft)-5)+'px';
+    slider_base.children[2].style.height = navbar.style.height;
+    slider_base.children[2].style.width = navbar.style.width;
+    slider_base.children[2].style.borderRadius = '0px';
+    slider_base.children[2].style.backgroundColor = 'rgba(249, 249, 249, 1)';
+    slider_base.children[2].style.boxShadow = 'rgba(249, 249, 249, 1) 0px 0px 0px 7px';
+
+    slider_base.children[3].style.zIndex = corner_zIndex_base ;
+    slider_base.children[3].style.position = 'absolute';
+    slider_base.children[3].style.right = (parseFloat(navbar.clientHeight)+parseFloat(hotcorner.style.marginLeft))+'px';
+    slider_base.children[3].style.height = navbar.style.height;
+    slider_base.children[3].style.width = navbar.style.width;
+    slider_base.children[3].style.borderRadius = '0px';
+    slider_base.children[3].style.backgroundColor = 'rgba(255, 36, 48, 1)';
+    slider_base.children[3].style.boxShadow = 'rgba(255, 36, 48, 1) 0px 0px 0px 8px';
+
+    // TODO show release version in the slider
+    // TODO (later) square/rectable >  bottom half release version top half settings
+    var slider_inside_nav = document.createElement('nav'); 
+    hotcorner.appendChild(slider_inside_nav);
 
     var drop_bttn = null;
 
@@ -160,41 +276,85 @@ function create_logo_hotcorner() {
         // create a rectangular button to be placed at the bottom of the logo on top of it
         //console.log(navbar.querySelector('button'));
         drop_bttn = document.createElement('button');
-        navbar.appendChild(drop_bttn);
+        hotcorner.appendChild(drop_bttn);
         drop_bttn.id = 'dropdown_button_01';
         drop_bttn = navbar.querySelector('#dropdown_button_01');
         drop_bttn.style.position = 'absolute';
-        drop_bttn.style.width = (parseFloat(navbar.style.height) * 70 / 100).toString() + 'px';
+        drop_bttn.style.width = navbar.clientHeight+'px';
         drop_bttn.style.height = drop_bttn.style.width;
+
+        drop_bttn.style.top = 'opx';
+        drop_bttn.style.left = (parseFloat(logo_bttn.clientWidth)-25).toString() + 'px';
+
         drop_bttn.style.borderRadius = '50% 50% 50% 50%';
         drop_bttn.style.backgroundColor = 'rgba(0,0,0,0.5)';
         drop_bttn.style.padding = '0px'; //fixing default padding
         drop_bttn.style.border = '0px'; //fixing default border
         drop_bttn.style.cursor = 'crosshair';
-        drop_bttn.style.zIndex = corner_zIndex_base + 2;
-        drop_bttn.style.display = 'none';
+        drop_bttn.style.zIndex = corner_zIndex_base;
+
+        //var drop_bttn_img = create_buttonImg(drop_bttn,'');
+
+        responsive_worker.onmessage = (msg) => {
+            console.log('message received from worker:');
+            console.log(msg.data);
+
+            if (msg.data[1] == 'desktop') {
+                drop_bttn.style.display = 'none';
+                drop_bttn.style.pointerEvents = 'auto';
+            } else {
+                // assume mobile
+                drop_bttn.style.display = 'block';
+                drop_bttn.style.pointerEvents = 'none';
+            }
+        }
+
         drop_bttn.addEventListener('mouseenter', function () {
             //console.log('drop_bttn mouse-over');
-            drop_bttn_mouse0vered = true;
-            hotcorner_processState();
+            if (get_mode() == 'desktop') {
+                drop_bttn_mouse0vered = true;
+                hotcorner_processState('desktop');
+            }
         });
         drop_bttn.addEventListener('mouseleave', function () {
             //console.log('drop_bttn mouse-out');
-            drop_bttn_mouse0vered = false;
-            hotcorner_processState();
+            if (get_mode() == 'desktop') {
+                drop_bttn_mouse0vered = false;
+                hotcorner_processState('desktop');
+            }
             //mouse0ut();
         });
+        // assume mobile
+        drop_bttn.addEventListener('touchstart', function () {
+            //console.log('drop_bttn mouse-over');
+            if (get_mode() == 'mobile') {
+                drop_bttn_touchstart = true;
+                hotcorner_processState('mobile');
+            }
+        });
+        drop_bttn.addEventListener('touchend', function () {
+            //console.log('drop_bttn mouse-out');
+            if (get_mode() == 'mobile') {
+                drop_bttn_touchstart = false;
+                hotcorner_processState('mobile');
+            }
+            //mouse0ut();
+        });
+
         //drop_bttn.style.backgroundImage = "url('/images/final_4.png')";
 
-        drop_bttn.style.top = ((parseFloat(navbar.style.height) * 25 / 100)).toString() + 'px';
-        drop_bttn.style.left = (parseFloat(navbar.style.height) - parseFloat(drop_bttn.style.top)).toString() + 'px';
+
     }
 
     //var hotcorner_state = false;
 
     var logo_bttn_mouse0vered = false;
+    var logo_bttn_touchstart = false;
     var drop_bttn_mouse0vered = false;
-    var drop_bttn_isactive = false;
+    var drop_bttn_touchstart = false;
+    var logo_bttn_touchend = false;
+    var logo_bttn_touchmoved = false;
+    var drop_bttn_isactive = false; // weather the navbar is expanded or not
 
 
 
