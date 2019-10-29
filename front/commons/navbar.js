@@ -1,7 +1,8 @@
 var navbar_loaded = false;
+var navbar;
 function create_navbar() {
 
-    var navbar = document.createElement("div");
+    navbar = document.createElement("div");
     document.body.appendChild(navbar);
 
     navbar.id = 'navbar';
@@ -25,9 +26,14 @@ function create_navbar() {
     //navbar.style.filter = 'blur(8px)';
 
     /* add logo button at the left corner */
+    /*
     loadScript('/front/commons/hotcorner.js', function() {
         create_logo_hotcorner();
-    });
+    });*/
+    $.getScript('/front/commons/hotcorner.js', () => {
+        create_logo_hotcorner();
+    })
+    
     navbar_loaded = true;
      
     //content.style.marginTop = (parseFloat(navbar.style.height) + 30).toString()+'px';

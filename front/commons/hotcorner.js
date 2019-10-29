@@ -17,7 +17,7 @@ function create_buttonImg(button, img_path) {
 
 
 function create_logo_hotcorner() {
-    var navbar = document.getElementById('navbar');
+    //var navbar = document.getElementById('navbar');
     //console.log(navbar);
     var corner_zIndex_base = 6;
     var hotcorner = document.createElement('div');
@@ -46,7 +46,7 @@ function create_logo_hotcorner() {
     logo_bttn.style.backgroundColor = 'rgba(0,0,0,0)'; //fixing default bg color
     logo_bttn.style.border = '0px'; //fixing default border
     logo_bttn.style.borderRadius = '50%';
-    logo_bttn.style.zIndex = corner_zIndex_base + 6;
+    logo_bttn.style.zIndex = corner_zIndex_base + 7;
     logo_bttn.style.cursor = "pointer";
     // TODO remove outline when clicking the button
     logo_bttn.style.display = 'block';
@@ -64,44 +64,23 @@ function create_logo_hotcorner() {
     //logo_bttn.style.boxShadow = 'rgba(255, 36, 48, 0.8) 0px 0px 0px 18px';
     // on hover/ mouse over -> increase size
 
-    /*function mouse0ut() {
-        //console.log(drop_bttn_isactive);
-        setTimeout(function () {
-            //console.log(drop_bttn_isactive);
-            if (drop_bttn_isactive != true) {
-                currHeight = parseFloat(navbar.children[1].style.height);
-                newHeight = original_size_logo_bttn;
-                ////console.log(newHeight);
-                // if drop_bttn is being hovered do not execute this
-                navbar.querySelector('button').style.height = newHeight.toString() + 'px';
-                navbar.querySelector('button').style.width = newHeight.toString() + 'px';
-                //navbar.children[1].children[0].style.boxShadow = '0px 0px 0px 0px rgba(0,0,0,0)';
-                // update dropdown size and location to original value
-
-                drop_bttn.style.top = (parseFloat(drop_bttn.style.top) - (currHeight - newHeight)) + 'px';
-                drop_bttn.style.height = (parseFloat(drop_bttn.style.height) - drop_bttn_diffs[0]) + 'px';
-                drop_bttn.style.width = (parseFloat(drop_bttn.style.width) - drop_bttn_diffs[1]) + 'px';
-                hotcorner_state = false;
-            }
-        }, 300);
-    }*/
     function hotcorner_processState(mode) {
-        //console.log('processing state');
+        console.log('processing state');
         //console.log(this);
         if (mode == 'desktop') {
             if (logo_bttn_mouse0ver) {
                 // play animation
                 //console.log('play animations');
-                if (!drop_bttn_isactive) {
+                if (!nav_slider_bttn_isactive) {
                     // make drop_bttn visible
-                    drop_bttn.style.display = 'block';
+                    nav_slider_bttn.style.display = 'block';
                     //document.body.style.backgroundColor = 'rgb(100,100,100)';
                 }
             } else {
-                if (!drop_bttn_isactive) {
-                    if (!drop_bttn_mouse0vered) {
+                if (!nav_slider_bttn_isactive) {
+                    if (!nav_slider_bttn_mouse0vered) {
                         // make drop_bttn invisible
-                        drop_bttn.style.display = 'none';
+                        nav_slider_bttn.style.display = 'none';
                     }
                 }
 
@@ -117,18 +96,22 @@ function create_logo_hotcorner() {
             //document.body.style.backgroundColor = 'rgb(0,50,100)';
             // check for drag
             /*
-            if (logo_bttn_touchmoved) {
-                //document.body.style.backgroundColor = 'rgb(0,50,100)';
-                hotcorner.style.left = logo_bttn_touchmoved_locs.pageX + 'px';
-            }*/
+            /*
             if (logo_bttn_touchmoved) {
                 hotcorner.style.left = (parseFloat(logo_bttn_touchmoved_locs.pageX) - parseFloat(logo_bttn_touchmoved_locs.pageX * 0.8)) + 'px';
                 //document.body.style.backgroundColor = 'rgb(100,100,100)';
-            }
-            if (!logo_bttn_touchstart) {
+            }else {
                 hotcorner.style.left = '0px';
                 // open dropdown
-            }
+            }*/
+        }
+        // mode agnostic
+        if (logo_bttn_touchmoved) {
+            hotcorner.style.left = (parseFloat(logo_bttn_touchmoved_locs.pageX) - parseFloat(logo_bttn_touchmoved_locs.pageX * 0.8)) + 'px';
+            //document.body.style.backgroundColor = 'rgb(100,100,100)';
+        } else {
+            hotcorner.style.left = '0px';
+            // open dropdown
         }
     }
 
@@ -138,7 +121,7 @@ function create_logo_hotcorner() {
     logo_bttn.addEventListener('mouseenter', function () {
         //document.body.style.backgroundColor = 'rgb(100,100,100)';
         logo_bttn_mouse0ver = true;
-        //console.log('logo_bttn mouse-over');
+        console.log('logo_bttn mouse-over');
         hotcorner_processState(curr_mode);
 
     });
@@ -206,6 +189,7 @@ function create_logo_hotcorner() {
     );
     hotcorner.appendChild(logo_bttn_img);
     logo_bttn_img.style.borderRadius = '50%';
+    logo_bttn_img.style.boxShadow = 'rgba(0, 0, 0, 0.3) -0px 0px 6px 3px';
     //logo_bttn_img.style.pointerEvents = 'none';
 
     // TODO create round div with zindex below img bttn and put boxshadow to it
@@ -226,7 +210,7 @@ function create_logo_hotcorner() {
     slider_base.style.margin = logo_bttn.style.margin;
     //hider.style.backgroundColor = 'red'; //remove
 
-    slider_base.children[0].style.zIndex = corner_zIndex_base + 3;
+    slider_base.children[0].style.zIndex = corner_zIndex_base + 5;
     slider_base.children[0].style.position = 'absolute';
     slider_base.children[0].style.right = '0px';
     slider_base.children[0].style.height = navbar.style.height;
@@ -235,7 +219,7 @@ function create_logo_hotcorner() {
     slider_base.children[0].style.backgroundColor = 'rgba(249, 249, 249, 1)';
     slider_base.children[0].style.boxShadow = 'rgba(249, 249, 249, 1) 0px 0px 0px 7px';
 
-    slider_base.children[1].style.zIndex = corner_zIndex_base + 1;
+    slider_base.children[1].style.zIndex = corner_zIndex_base + 3;
     slider_base.children[1].style.position = 'absolute';
     slider_base.children[1].style.right = '0px';
     slider_base.children[1].style.height = navbar.style.height;
@@ -244,7 +228,7 @@ function create_logo_hotcorner() {
     slider_base.children[1].style.backgroundColor = 'rgba(255, 36, 48, 1)';
     slider_base.children[1].style.boxShadow = 'rgba(255, 36, 48, 1) 0px 0px 0px 8px';
 
-    slider_base.children[2].style.zIndex = corner_zIndex_base + 2;
+    slider_base.children[2].style.zIndex = corner_zIndex_base + 4;
     slider_base.children[2].style.position = 'absolute';
     slider_base.children[2].style.right = (parseFloat(navbar.clientHeight) + parseFloat(hotcorner.style.marginLeft) - 5) + 'px';
     slider_base.children[2].style.height = navbar.style.height;
@@ -253,7 +237,7 @@ function create_logo_hotcorner() {
     slider_base.children[2].style.backgroundColor = 'rgba(249, 249, 249, 1)';
     slider_base.children[2].style.boxShadow = 'rgba(249, 249, 249, 1) 0px 0px 0px 7px';
 
-    slider_base.children[3].style.zIndex = corner_zIndex_base;
+    slider_base.children[3].style.zIndex = corner_zIndex_base+2;
     slider_base.children[3].style.position = 'absolute';
     slider_base.children[3].style.right = (parseFloat(navbar.clientHeight) + parseFloat(hotcorner.style.marginLeft)) + 'px';
     slider_base.children[3].style.height = navbar.style.height;
@@ -267,65 +251,80 @@ function create_logo_hotcorner() {
     var slider_inside_nav = document.createElement('nav');
     hotcorner.appendChild(slider_inside_nav);
 
-    var drop_bttn = null;
+    var nav_slider_bttn = null;
 
-    if (drop_bttn == null) {
+    if (nav_slider_bttn == null) {
         // create a rectangular button to be placed at the bottom of the logo on top of it
         //console.log(navbar.querySelector('button'));
-        drop_bttn = document.createElement('button');
-        hotcorner.appendChild(drop_bttn);
-        drop_bttn.id = 'dropdown_button_01';
-        drop_bttn = navbar.querySelector('#dropdown_button_01');
-        drop_bttn.style.position = 'absolute';
-        drop_bttn.style.width = navbar.clientHeight + 'px';
-        drop_bttn.style.height = drop_bttn.style.width;
+        nav_slider_bttn = document.createElement('button');
+        hotcorner.appendChild(nav_slider_bttn);
+        nav_slider_bttn.id = 'nav_slider_bttn';
+        nav_slider_bttn = navbar.querySelector('#nav_slider_bttn');
+        nav_slider_bttn.style.position = 'absolute';
+        nav_slider_bttn.style.width = navbar.clientHeight + 'px';
+        nav_slider_bttn.style.height = nav_slider_bttn.style.width;
 
-        drop_bttn.style.top = 'opx';
-        drop_bttn.style.left = (parseFloat(logo_bttn.clientWidth) - 25).toString() + 'px';
+        nav_slider_bttn.style.top = '0px';
+        nav_slider_bttn.style.left = (parseFloat(logo_bttn.clientWidth) - 25).toString() + 'px';
 
-        drop_bttn.style.borderRadius = '50% 50% 50% 50%';
-        drop_bttn.style.backgroundColor = 'rgba(0,0,0,0.5)';
-        drop_bttn.style.padding = '0px'; //fixing default padding
-        drop_bttn.style.border = '0px'; //fixing default border
-        drop_bttn.style.cursor = 'crosshair';
-        drop_bttn.style.zIndex = corner_zIndex_base;
+        nav_slider_bttn.style.borderRadius = '50% 50% 50% 50%';
+        nav_slider_bttn.style.backgroundColor = 'rgba(0,0,0,0.5)';
+        nav_slider_bttn.style.padding = '0px'; //fixing default padding
+        nav_slider_bttn.style.border = '0px'; //fixing default border
+        nav_slider_bttn.style.cursor = 'crosshair';
+        nav_slider_bttn.style.zIndex = corner_zIndex_base+1;
+        nav_slider_bttn.style.display = 'block';
 
-        //var drop_bttn_img = create_buttonImg(drop_bttn,'');
+        var nav_slider_bttn_img = create_buttonImg(nav_slider_bttn,'/images/ic_chevron_right_48px.svg');
+        hotcorner.appendChild(nav_slider_bttn_img);
+        $(nav_slider_bttn_img).css({
+            "position": "absolute",
+            "top": nav_slider_bttn.style.top,
+
+        });
+
+        function update_nav_slider_bttn(mode) {
+            switch (mode) {
+                case 'mobile':
+                case 'tablet':
+                        nav_slider_bttn.style.display = 'block';
+                        nav_slider_bttn.style.pointerEvents = 'none';
+                        break;
+                case 'desktop':
+                    nav_slider_bttn.style.display = 'none';
+                    nav_slider_bttn.style.pointerEvents = 'auto';
+                    break;
+
+            }
+        }
+        update_nav_slider_bttn(curr_mode);
 
         responsive_worker.onmessage = (msg) => {
             console.log('message received from worker:');
             console.log(msg.data);
-
-            if (msg.data[1] == 'desktop') {
-                drop_bttn.style.display = 'none';
-                drop_bttn.style.pointerEvents = 'auto';
-            } else {
-                // assume mobile
-                drop_bttn.style.display = 'block';
-                drop_bttn.style.pointerEvents = 'none';
-            }
+            update_nav_slider_bttn(curr_mode);
         }
 
-        drop_bttn.addEventListener('mouseenter', function () {
+        nav_slider_bttn.addEventListener('mouseenter', function () {
             //console.log('drop_bttn mouse-over');
-            drop_bttn_mouse0vered = true;
+            nav_slider_bttn_mouse0vered = true;
             hotcorner_processState(curr_mode);
         });
-        drop_bttn.addEventListener('mouseleave', function () {
+        nav_slider_bttn.addEventListener('mouseleave', function () {
             //console.log('drop_bttn mouse-out');
-            drop_bttn_mouse0vered = false;
+            nav_slider_bttn_mouse0vered = false;
             hotcorner_processState(curr_mode);
             //mouse0ut();
         });
         // assume mobile
-        drop_bttn.addEventListener('touchstart', function () {
+        nav_slider_bttn.addEventListener('touchstart', function () {
             //console.log('drop_bttn mouse-over');
-            drop_bttn_touchstart = true;
+            nav_slider_bttn_touchstart = true;
             hotcorner_processState(curr_mode);
         });
-        drop_bttn.addEventListener('touchend', function () {
+        nav_slider_bttn.addEventListener('touchend', function () {
             //console.log('drop_bttn mouse-out');
-            drop_bttn_touchstart = false;
+            nav_slider_bttn_touchstart = false;
             hotcorner_processState(curr_mode);
             //mouse0ut();
         });
@@ -343,16 +342,16 @@ function create_logo_hotcorner() {
     var logo_bttn_touchmoved = false;
     var log_bttn_mousedrag = false;
 
-    var drop_bttn_mouse0vered = false;
-    var drop_bttn_touchstart = false;
-    var drop_bttn_isactive = false; // weather the navbar is expanded or not
+    var nav_slider_bttn_mouse0vered = false;
+    var nav_slider_bttn_touchstart = false;
+    var nav_slider_bttn_isactive = false; // weather the navbar is expanded or not
 
 
 
     logo_bttn.onclick = function () {
         window.open(URL = home_url, nam = "_self")
     };
-    drop_bttn.onclick = function () {
+    nav_slider_bttn.onclick = function () {
         //console.log('small button clicked');
     }
 

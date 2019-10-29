@@ -1,0 +1,11 @@
+{
+    "name": "karmakast",
+    "version": "0.0.3",
+    "dependencies": {
+        "jQuery": "3.4.1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/SreeChandan/karmakast"
+    }
+}

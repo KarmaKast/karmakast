@@ -1,4 +1,5 @@
-var responsive_worker = new Worker('/front/commons/responsive_worker.js');
+console.log('responsive.js loaded');
+var responsive_worker = null; 
 var media_modes = ['auto', 'mobile', 'tablet', 'desktop'];
 var media_modes_bools = {
     'auto': false,
@@ -10,6 +11,9 @@ var force_set_mode = media_modes[0];
 var curr_mode = get_mode();
 
 function mode_listener(x) {
+    if (responsive_worker==null) {
+        responsive_worker = new Worker('/front/commons/responsive_worker.js');
+    }
     let curr_mode_ = curr_mode;
     if (x.matches) { // If media query matches
         if (x.media.match('1024')) {
@@ -41,8 +45,8 @@ function mode_listener(x) {
     }
     curr_mode = get_mode();
     let msg = [curr_mode_, curr_mode];
-    console.log('mode changed:');
-    console.log(msg);
+    //console.log('mode changed:');
+    //console.log(msg);
     responsive_worker.postMessage(msg);
 }
 

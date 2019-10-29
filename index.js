@@ -1,60 +1,120 @@
 var home_url = "";
-var gStyle = document.createElement('style');
-gStyle.id = 'gStyle'; //page global style
-document.head.appendChild(gStyle);
+var gStyle = null;
+//gStyle.id = 'gStyle'; //page global style
+var console_log = [];
+
+
 
 
 
 function load_index() {
     // TODO check device
-    
-    loadScript('/front/commons/responsive.js', () => {
-        setup_listeners();
-        mode_listener(mode_min_320);
-        mode_listener(mode_min_768);
-        mode_listener(mode_min_1024);
-        get_mode();
-    })
+    $(document).ready(function () {
+        console.log("ready!");
+        var meta = document.createElement('meta');
+        document.head.appendChild(meta);
+        meta.setAttribute('charset', 'utf-8');
+        meta.setAttribute('content', 'width=device-width, initial-scale=1.0');
+        meta.name = 'viewport';
 
-    
-    
+        gStyle = document.createElement('style');
+        $(gStyle).attr("id", "gStyle");
+
+        document.head.appendChild(gStyle);
+
+        document.body.style.margin = "0px";
+        home_url = window.location.href;
+        /*
+        loadScript('/front/commons/responsive.js', () => {
+            setup_listeners();
+            mode_listener(mode_min_320);
+            mode_listener(mode_min_768);
+            mode_listener(mode_min_1024);
+            get_mode();
+        });*/
+
+        $.getScript("/front/commons/responsive.js", () => {
+            setup_listeners();
+            try {
+                mode_listener(mode_min_768);
+                mode_listener(mode_min_1024);
+                get_mode();
+                mode_listener(mode_min_320);
+            } catch (error) {
+                console_.log(error);
+            }
+        });
+        $.getScript("/front/commons/navbar.js", () => {
+            //create_navbar(contentdiv);
+            //document.body.style.backgroundColor = 'red';
+            create_navbar();
+
+        });
+    });
+
+
+
+
+
     /*responsive_worker.onmessage = (msg) => {
         console.log('message received from worker !!!');
         console.log(msg);
     }*/
     //console.log(get_mode());
+    //$()
 
-    var meta = document.createElement('meta');
-    document.head.appendChild(meta);
-    meta.setAttribute('charset', 'utf-8');
-    meta.setAttribute('content', 'width=device-width, initial-scale=1.0');
-    meta.name = 'viewport';
-    document.body.style.margin = "0px";
-    home_url = window.location.href;
     //console.log(home_url);
     //create_navbar()
+    /*
     loadScript('/front/commons/navbar.js', function () {
         //create_navbar(contentdiv);
         create_navbar();
+    });*/
+
+    // ------------------ DEV CORNER --------------------------
+    var dev_corner_div = document.createElement('div');
+    document.body.appendChild(dev_corner_div);
+
+
+    $(dev_corner_div).css({
+        "position": "fixed",
+        "height": "100%",
+        "width": "100%",
+        "backgroundColor": "rgba(0,0,0,0)",
+        "z-index": "20",
+        "pointer-events": "none",
     });
-    var version_div = document.createElement('div');
-    document.body.appendChild(version_div);
-    version_div.id = 'version_div';
-    version_div.style.position = 'absolute';
-    version_div.style.top = '0px';
-    version_div.style.right = '0px';
-    version_div.style.height = '30px';
-    version_div.style.width = '50px';
-    version_div.style.backgroundColor = 'rgba(0,0,0,0)';
-    version_div.innerHTML = `
-        <p style='color:rgb(150,150,150)' >
-            ${'dev: 0.0.3'}
-        </p>
-    `;
-    version_div.style.zIndex = 20;
+    $(dev_corner_div).attr("id", "dev_corner_div");
+    //dev_corner_div.style.pointerEvents
+
+    var version_ = document.createElement('p');
+    dev_corner_div.appendChild(version_);
+    $(version_).css({
+        "position": "absolute",
+        "top": "0px",
+        "right": "5px",
+        "color": "rgb(150,150,150)",
+        "z-index": "20",
+    });
+    version_.innerHTML = '0.0.4';
+
+    var console_ = document.createElement('p');
+    dev_corner_div.appendChild(console_);
+    $(console_).css({
+        "background-color": "rgba(0,0,0,0.2)",
+        "position": "absolute",
+        "bottom": "0px",
+        "margin": "2%",
+        "height": "25%",
+        "width": "96%",
+        "z-index": "21",
+    });
+    console_.innerHTML = '$(console_log)';
+    //version_.style.color = 'rgb(150,150,150)';
+
     //version_div.children[0].style.textEmphasisColor = 'rgb(200,200,200)';
 
-    
+
 }
 
 var contentdiv = document.createElement('div');
