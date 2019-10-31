@@ -5,7 +5,8 @@
       :zIndex="base_zIndex+1"
       :parentMargin="margin"
       :hotCornerLoc="location"
-      :insidePaddingPercent=20
+      :insidePaddingPercent="16"
+      :window_width="this.window_width"
     />
     <div id="SliderNavbar"></div>
   </div>
@@ -25,7 +26,7 @@ export default {
   },
   computed: {
     location: function() {
-      return '50px';
+      return "8px";
     },
     styleObj: function() {
       return {
@@ -34,15 +35,31 @@ export default {
         height: this.size,
         marginTop: this.margin,
         marginLeft: this.margin,
-        paddingLeft: this.location,
+        paddingLeft: this.location
       };
     }
   },
   data: function() {
     return {
       state: "beforeLoad",
-      margin: "4px"
+      margin: "4px",
+      window_width: window.innerWidth+'px',
+      window_height: window.innerHeigh+'px'
     };
+  },
+  methods: {
+    handleResize() {
+      this.window_width = window.innerWidth+'px';
+      this.window_height = window.innerHeight+'px';
+    }
+  },
+  created: function() {
+    window.addEventListener("resize", this.handleResize);
+    //this.handleResize();
+    //this.window_width = window.innerWidth;
+  },
+  destroyed: function() {
+    window.removeEventListener("resize", this.handleResize);
   }
 };
 </script>

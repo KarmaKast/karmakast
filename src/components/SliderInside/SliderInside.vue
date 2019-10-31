@@ -1,9 +1,31 @@
 <template>
-  <div id="SliderInside" v-bind:style="{'width': window_width_, 'height':height}">
+  <div id="SliderInside" :style="{'width': window_width, 'height':height}">
+    <div id="SlideHandle" :style="{'width': window_width, 'height':height, 'margin-top':spot_top_margin}" :zIndex="zIndex+5" ></div>
     <button-spot
+      id="logo"
       :size="height"
+      right="0px"
+      :bottom="bttnSpot_bottom"
       :zIndex="zIndex+4"
-      :img_src="img_src_"
+      :img_src="logo_img_src_"
+      :parentMarginTop="spot_top_margin"
+    />
+    <button-spot
+      id="info"
+      :size="height"
+      right="72px"
+      :bottom="bttnSpot_bottom"
+      :zIndex="zIndex+4"
+      :img_src="info_img_src_"
+      :parentMarginTop="spot_top_margin"
+    />
+    <button-spot
+      id="info"
+      :size="height"
+      right="144px"
+      :bottom="bttnSpot_bottom"
+      :zIndex="zIndex+4"
+      :img_src="info_img_src_"
       :parentMarginTop="spot_top_margin"
     />
     <div id="SliderInside-bg">
@@ -27,14 +49,12 @@ export default {
     zIndex: Number,
     parentMargin: String,
     hotCornerLoc: String,
-    insidePaddingPercent: Number
+    insidePaddingPercent: Number,
+    window_width: String
   },
   computed: {
-    window_width_: function() {
-      return this.window_width + "px";
-    },
-    img_src_: function() {
-      return require("@/assets/final_4.png");
+    info_img_src_: function() {
+      return "";
     },
     spot_top_margin: function() {
       return (
@@ -42,6 +62,11 @@ export default {
           (parseFloat(this.bg_height) - parseFloat(this.height)) /
           2
         ).toString() + "px"
+      );
+    },
+    bttnSpot_bottom: function() {
+      return (
+        '-'+this.spot_top_margin
       );
     },
     bg_height: function() {
@@ -60,29 +85,40 @@ export default {
       let radius = (parseFloat(this.bg_height) / 2).toString() + "px ";
       return radius;
     },
+    bg_right_: function() {
+      return (
+        parseFloat(this.window_width) -
+        parseFloat(this.height) -
+        parseFloat(this.spot_top_margin) -
+        parseFloat(this.parentMargin) -
+        parseFloat(this.hotCornerLoc) +
+        "px"
+      );
+    },
     bg_styles: function() {
       return [
         {
-          zIndex: this.zIndex,
-          backgroundColor: this.bg_colors[0] + "" + this.bg_opacity + ")",
-          boxShadow:
-            this.bg_colors[0] + "" + this.bg_opacity + ") 0px 0px 0px 7px"
+          zIndex: this.zIndex + 1,
+          backgroundColor: this.bg_colors[0] + "" + 1 * this.bg_opacity + ")",
         },
         {
-          zIndex: this.zIndex + 1,
+          zIndex: this.zIndex,
+          backgroundColor: this.bg_colors[0] + "" + 0.8 * this.bg_opacity + ")",
           boxShadow:
-            this.bg_colors[1] + "" + this.bg_opacity + ") 0px 0px 0px 1px"
+            this.bg_colors[1] +
+            "" +
+            0.035 +
+            ") 0px 0px 0px 7px" +
+            ", " +
+            this.bg_colors[1] +
+            "" +
+            2 * this.bg_opacity +
+            ") 0px 0px 0px 1.5px"
         },
         {
           width: "100%",
           position: "fixed",
-          right:
-            parseFloat(this.window_width_) -
-            parseFloat(this.height) -
-            parseFloat(this.spot_top_margin) -
-            parseFloat(this.parentMargin) -
-            parseFloat(this.hotCornerLoc) +
-            "px",
+          right: this.bg_right_,
           borderRadius: "0% " + this.bg_radius_ + this.bg_radius_ + "0%",
           height: this.bg_height
         }
@@ -91,25 +127,19 @@ export default {
   },
   data: function() {
     return {
-      window_width: window.innerWidth,
       publicPath: process.env.BASE_URL,
-      bg_colors: ["rgba(249, 249, 249, ", "rgba(255, 36, 48, "],
-      bg_opacity: 0.3
+      bg_colors: [
+        "rgba(255, 255, 255, ",
+        "rgba(255, 56, 76, ",
+        "rgba(245, 21, 32, "
+      ],
+      bg_opacity: 0.15,
+      logo_img_src_: require("@/assets/final_4.png")
     };
   },
-  created: function() {
-    window.addEventListener("resize", this.handleResize);
-    //this.handleResize();
-    //this.window_width = window.innerWidth;
-  },
-  destroyed: function() {
-    window.removeEventListener("resize", this.handleResize);
-  },
-  methods: {
-    handleResize() {
-      this.window_width = window.innerWidth;
-    }
-  }
+  created: function() {},
+  destroyed: function() {},
+  methods: {}
 };
 </script>
 
@@ -118,5 +148,9 @@ export default {
   position: absolute;
   right: 0px;
   /*background-color: red;*/
+}
+#SlideHandle {
+  position: absolute;
+  right: 0px;
 }
 </style>
