@@ -1,7 +1,7 @@
 <template>
-  <div class="ButtonSpot" :class="{active: isactive}" :style="this.styleObj">
-    <button :style="{zIndex: zIndex+1}" ></button>
-    <img :style="{zIndex: zIndex}" :src="img_src_" />
+  <div class="ButtonSpot" :class="{active: isactive}" :style="this.Bttn_Spot_styleObj">
+    <button :style="{zIndex: zIndex+1}" v-on:mouse.capture="this.hovered_counter_add"></button>
+    <img :style="this.ImgSrc_styleObj" :src="img_src_" @error="noImageFound" />
   </div>
 </template>
 
@@ -19,7 +19,9 @@ export default {
   },
   data: function() {
     return {
-      isactive: false
+      isactive: false,
+      hovered_counter: 0,
+      img_src_error: false
     };
   },
   computed: {
@@ -32,7 +34,7 @@ export default {
         return "";
       }
     },
-    styleObj: function() {
+    Bttn_Spot_styleObj: function() {
       return {
         height: this.size,
         width: this.size,
@@ -40,8 +42,30 @@ export default {
         marginTop: this.parentMarginTop
       };
     },
+    ImgSrc_styleObj: function() {
+      return {
+        zIndex: this.zIndex,
+        display: this.img_display()
+      };
+    },
     size_: function() {
       return {};
+    }
+  },
+  methods: {
+    hovered_counter_add() {
+      this.hovered_counter = this.hovered_counter + 1;
+    },
+    noImageFound() {
+      this.img_src_error = true;
+      //Object.assign({},this.style_obj,{display:'none'});
+    },
+    img_display() {
+      if (this.img_src_error) {
+        return "none";
+      } else {
+        return "initial";
+      }
     }
   }
 };
@@ -54,6 +78,9 @@ export default {
 .ButtonSpot {
   position: absolute;
   right: 0px;
+  border-radius: 50%;
+  box-shadow: inset 0px 0px 2px 0px rgba(0, 0, 0, 0.64),
+    0px 0px 0px 5px rgba(0, 0, 0, 0.07);
 }
 button {
   position: absolute;
@@ -71,8 +98,7 @@ img {
   right: 0px;
   height: 100%;
   width: 100%;
-  border-radius: 100%;
+  border-radius: 50%;
   border: 0px;
-  box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.4);
 }
 </style>
