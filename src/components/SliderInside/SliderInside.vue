@@ -2,8 +2,7 @@
   <div id="SliderInside" :style="{'width': window_width, 'height':height}">
     <div
       id="SlideHandle"
-      :style="{'width': window_width, 'height':height, 'margin-top':spot_top_margin}"
-      :zIndex="zIndex+5"
+      :style="{'width': window_width, 'height':height, 'margin-top':spot_top_margin, 'zIndex':zIndex+6}"
       v-touch:swipe.right="swipeHander"
     ></div>
 
