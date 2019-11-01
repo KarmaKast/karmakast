@@ -6,7 +6,7 @@
       :parentMargin="margin"
       :hotCornerLoc="location"
       :insidePaddingPercent="16"
-      :window_width="this.window_width"
+      :window_width="this.$store.state.window_width"
     />
     <div id="SliderNavbar"></div>
   </div>
@@ -25,6 +25,10 @@ export default {
     size: String
   },
   computed: {
+    /*window_fromStore: function() {
+      return "";
+      //return this.$Store.state.window;
+    },*/
     location: function() {
       return "8px";
     },
@@ -43,23 +47,13 @@ export default {
     return {
       state: "beforeLoad",
       margin: "4px",
-      window_width: window.innerWidth+'px',
-      window_height: window.innerHeigh+'px'
     };
   },
   methods: {
-    handleResize() {
-      this.window_width = window.innerWidth+'px';
-      this.window_height = window.innerHeight+'px';
-    }
   },
   created: function() {
-    window.addEventListener("resize", this.handleResize);
-    //this.handleResize();
-    //this.window_width = window.innerWidth;
   },
   destroyed: function() {
-    window.removeEventListener("resize", this.handleResize);
   }
 };
 </script>
@@ -68,5 +62,6 @@ export default {
 <style scoped>
 #HotCorner {
   position: absolute;
+  /*background-color: red;*/
 }
 </style>

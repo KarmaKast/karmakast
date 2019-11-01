@@ -7,6 +7,7 @@
 
 <script>
 import HotCorner from "./components/HotCorner.vue";
+//import { mapState } from 'vuex';
 
 export default {
   name: "app",
@@ -18,29 +19,26 @@ export default {
       HotCorner_base_zIndex: 40,
       HotCorner_size: "54px", // keep it to odd numbers
       theme: "auto", // TODO
-      window_width: window.innerWidth+'px',
-      window_height: window.innerHeight+'px'
+      window_height: this.$store.state.window_height
     };
   },
   computed: {
     bgStyleObj: function() {
       return {
         position: 'fixed',
-        width: this.window_width,
-        height: this.window_height
+        width: this.$store.state.window_width,
+        height: this.$store.state.window_height
       };
     }
   },
   methods: {
     handleResize() {
-      this.window_width = window.innerWidth+'px';
-      this.window_height = window.innerHeight+'px';
+      this.$store.commit('update_window_width',window.innerWidth+'px');
+      this.$store.commit('update_window_height',window.innerHeight+'px');
     }
   },
   created: function() {
     window.addEventListener("resize", this.handleResize);
-    //this.handleResize();
-    //this.window_width = window.innerWidth;
   },
   destroyed: function() {
     window.removeEventListener("resize", this.handleResize);
