@@ -1,9 +1,0 @@
-div.dropdown {
-    /*float: right;*/
-    display: inline-block;
-}
-
-div.dropdown>button.dropdown-button:hover+div.dropdown-content {
-    position: absolute;
-    display: inline-block;
-}
