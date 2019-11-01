@@ -1,10 +1,5 @@
 <template>
   <div id="SliderInside" :style="{'width': window_width, 'height':height}">
-    <div
-      id="SlideHandle"
-      :style="{'width': window_width, 'height':height, 'margin-top':spot_top_margin, 'zIndex':zIndex+6}"
-      v-touch:swipe.right="swipeHander"
-    ></div>
 
     <button-spot
       id="logo"
@@ -18,7 +13,7 @@
     <button-spot
       id="info"
       :size="height"
-      right="72px"
+      right="68px"
       :bottom="bttnSpot_bottom"
       :zIndex="zIndex+4"
       :img_src="info_img_src_"
@@ -27,7 +22,7 @@
     <button-spot
       id="info"
       :size="height"
-      right="144px"
+      right="136px"
       :bottom="bttnSpot_bottom"
       :zIndex="zIndex+4"
       :img_src="info_img_src_"
@@ -125,10 +120,13 @@ export default {
     },
     bg_drag: function() {
       return {
-        height: (parseFloat(this.bg_height)+parseFloat(this.spot_top_margin)*6) + "px",
-        bottom: "-" + parseFloat(this.spot_top_margin)*5 + 'px'
+        height:
+          parseFloat(this.bg_height) +
+          parseFloat(this.spot_top_margin) * 6 +
+          "px",
+        bottom: "-" + parseFloat(this.spot_top_margin) * 5 + "px"
       };
-    }
+    },
   },
   data: function() {
     return {
@@ -141,14 +139,17 @@ export default {
       bg_opacity: 1,
       logo_img_src_: require("@/assets/final_4.png"), // TODO move these to computed to account for updated images
       info_img_src_: "",
-      drag_img_src_: require("@/assets/0001.svg")
+      drag_img_src_: require("@/assets/0001.svg"),
+      swipe_loc: "0px"
     };
   },
   created: function() {},
   destroyed: function() {},
   methods: {
-    swipeHander() {
+    swipeHandleRight(direction, ev) {
       // update the location computed data in HotCorner Component
+      alert("swipe detected" + direction + ev);
+      this.swipe_loc = ev.targetTouches[0];
     }
   }
 };

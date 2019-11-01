@@ -1,6 +1,6 @@
 <template>
   <div class="ButtonSpot" :class="{active: isactive}" :style="this.Bttn_Spot_styleObj">
-    <button :style="{zIndex: zIndex+1}" @mouseenter="this.setfocus" @mouseleave="this.setfocus"></button>
+    <button :style="{zIndex: zIndex+2}" @mouseenter="this.setfocus" @mouseleave="this.setfocus"></button>
     <img :style="this.ImgSrc_styleObj" :src="img_src_" @error="noImageFound" />
   </div>
 </template>
@@ -23,8 +23,8 @@ export default {
       isactive: false,
       hovered_counter: 0,
       img_src_error: false,
-      button_isfocused: true,
-      defalut_icon_src: require("@/assets/action_add.svg")
+      button_isfocused: false,
+      defalut_icon_src: require("@/assets/action_add_1.svg")
     };
   },
   computed: {
@@ -51,18 +51,28 @@ export default {
       };
     },
     ImgSrc_styleObj: function() {
-      return {
-        zIndex: this.zIndex,
-        display: this.img_display()
-      };
+      if (!this.button_isfocused) {
+        return {
+          zIndex: this.zIndex,
+          display: this.img_display(),
+          width: "96%",
+          height: "96%",
+          color: "rgb(222,5,36)"
+        };
+      } else {
+        return {
+          zIndex: this.zIndex,
+          display: this.img_display(),
+          width: "94%",
+          height: "94%"
+        };
+      }
     },
     size_: function() {
       return {};
     }
   },
-  created: function() {
-    this.setfocus();
-  },
+  created: function() {},
   methods: {
     setfocus() {
       if (this.button_isfocused) {
@@ -88,13 +98,15 @@ export default {
       } else {
         return "initial";
       }
+    },
+    buttonclicked() {
+      alert("button is clicked");
     }
   },
   watch: {
-    button_isfocused: function(){
-      if (this.button_isfocused===true) {
+    button_isfocused: function() {
+      if (this.button_isfocused === true) {
         // increase size of button and img and reposition them
-        
       }
     }
   }
@@ -123,8 +135,6 @@ button {
 }
 img {
   margin: auto;
-  height: 96%;
-  width: 96%;
   border-radius: 50%;
   border: 0px;
 }

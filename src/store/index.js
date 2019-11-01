@@ -35,7 +35,6 @@ export default new Vuex.Store({
             } else {
                 return false;
             }
-
             //window.devicePixelRatio
         }
     },

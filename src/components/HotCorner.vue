@@ -30,7 +30,7 @@ export default {
       //return this.$Store.state.window;
     },*/
     location: function() {
-      return "8px";
+      return "150px";
     },
     styleObj: function() {
       return {
