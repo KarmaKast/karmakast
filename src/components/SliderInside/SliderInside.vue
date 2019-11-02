@@ -3,7 +3,7 @@
     <button-spot
       id="logo"
       :size="height"
-      right="0px"
+      :right_="button_positions[0]"
       :bottom="bttnSpot_bottom"
       :zIndex="zIndex+4"
       :img_src="logo_img_src_"
@@ -12,7 +12,7 @@
     <button-spot
       id="info"
       :size="height"
-      right="68px"
+      :right_="button_positions[1]"
       :bottom="bttnSpot_bottom"
       :zIndex="zIndex+4"
       :img_src="info_img_src_"
@@ -21,7 +21,7 @@
     <button-spot
       id="info"
       :size="height"
-      right="136px"
+      :right_="button_positions[2]"
       :bottom="bttnSpot_bottom"
       :zIndex="zIndex+4"
       :img_src="info_img_src_"
@@ -120,6 +120,15 @@ export default {
           "px",
         bottom: "-" + parseFloat(this.spot_top_margin) * 5 + "px"
       };
+    },
+    button_positions: function() {
+      let num = 3;
+      let positions = ['0px'];
+      for (let i=1; i<num; i++) {
+        let position = (parseFloat(positions[i-1])+parseFloat(this.height)+this.buttonspots_spacing)+'px';
+        positions.push(position)
+      }
+      return positions;
     }
   },
   data: function() {
@@ -134,7 +143,8 @@ export default {
       logo_img_src_: require("@/assets/final_4.png"), // TODO move these to computed to account for updated images
       info_img_src_: "",
       drag_img_src_: require("@/assets/0001.svg"),
-      swipe_loc: "0px"
+      swipe_loc: "0px",
+      buttonspots_spacing: 12
     };
   },
   created: function() {},

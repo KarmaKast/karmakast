@@ -15,7 +15,7 @@ export default {
   name: "ButtonSpot",
   props: {
     size: String,
-    right: String,
+    right_: String,
     bottom: String,
     zIndex: Number,
     img_src: String,
@@ -48,7 +48,7 @@ export default {
         width: this.size,
         zIndex: this.zIndex + 1,
         marginTop: this.parentMarginTop,
-        right: this.right,
+        right: this.right_,
         bottom: this.bottom,
         boxShadow:
           `inset 0px 0px 2px 0px rgba(0, 0, 0, 0.64),
@@ -123,23 +123,16 @@ export default {
       this.dragging = false
     },
     mouseSwipeHandler(ev) {
-      //alert("swipe detected" + ev.targetTouches[0]);
-      //this.touch_loc = "swipe detected" + ev.clientX;
-      if (this.dragging) {
-        //alert('what? why?')
-        this.$store.commit("update_hotcorner_loc", (ev.clientX - parseFloat(this.size)/2)+ "px");
-      }
+      this.doDrag(ev.clientX);
     },
     touchSwipeHandler(ev){
+      this.doDrag(ev.targetTouches[0].pageX);
+    },
+    doDrag(toPos) {
       if (this.dragging) {
         //alert('what? why?')
-        this.$store.commit("update_hotcorner_loc", (ev.targetTouches[0].pageX - parseFloat(this.size)/2)+ "px");
+        this.$store.commit("update_hotcorner_loc", (toPos + parseFloat(this.right_) - parseFloat(this.size)/2)+ "px");
       }
-    },
-    swipeHandleRight(direction, ev) {
-      // update the location computed data in HotCorner Component
-      alert("swipe detected" + direction + ev);
-      this.swipe_loc = ev.targetTouches[0];
     }
   },
   watch: {
