@@ -169,6 +169,14 @@ export default {
           parseFloat(this.spot_top_margin) * 2.4;
         this.$store.commit("update_hotcorner_loc", reset_loc + "px");
         //alert("change detected");
+      } else {
+        if (this.$store.state.hotcorner_expandedMagnet) {
+          let reset_loc =
+          parseFloat(this.window_width) -
+          parseFloat(this.height) -
+          parseFloat(this.spot_top_margin) * 2.4;
+          this.$store.commit("update_hotcorner_loc", reset_loc + "px");
+        }
       }
     }
   },

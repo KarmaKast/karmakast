@@ -150,6 +150,7 @@ export default {
         //let diff = toPos- parseFloat(this.right_) - parseFloat(this.size);
         //alert(diff);
         //let maxPos =  window.innerWidth - parseFloat(this.right_) - parseFloat(this.size)/2 - parseFloat(this.parentMarginTop)*2.4;
+        
         if (!(this.touch_loc > this.draggable_maxPos)) {
           this.$store.commit(
             "update_hotcorner_loc",
@@ -159,6 +160,15 @@ export default {
               "px"
           );
         }
+        if (this.touch_loc + this.$store.state.hotcorner_expandedMagnetRange > this.draggable_maxPos) {
+          if (!this.$store.state.hotcorner_expandedMagnet) {
+            this.$store.commit("update_hotcorner_expandedMagnet", true);
+          }
+        } else {
+          if (this.$store.state.hotcorner_expandedMagnet) {
+            this.$store.commit("update_hotcorner_expandedMagnet", false);
+          }
+        }
       }
     }
   },
@@ -167,7 +177,7 @@ export default {
       if (this.button_isfocused === true) {
         // increase size of button and img and reposition them
       }
-    },
+    }
   }
 };
 </script>
