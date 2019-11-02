@@ -31,10 +31,13 @@ export default {
       dragging: false,
       button_isfocused: false,
       defalut_icon_src: require("@/assets/action_add_1.svg"),
-      touch_loc: "0px"
+      touch_loc: 0
     };
   },
   computed: {
+    window_width: function() {
+      return this.$store.state.window_width;
+    },
     img_src_: function() {
       if (this.img_src_error == true) {
         return this.defalut_icon_src;
@@ -77,6 +80,14 @@ export default {
     },
     size_: function() {
       return {};
+    },
+    draggable_maxPos: function() {
+      return (
+        parseFloat(this.window_width) -
+        parseFloat(this.right_) -
+        parseFloat(this.size) / 2 -
+        parseFloat(this.parentMarginTop) * 2.4
+      );
     }
   },
   mounted: function() {
@@ -91,8 +102,6 @@ export default {
     this.$el.addEventListener("touchstart", this.startDrag);
     window.addEventListener("touchend", this.stopDrag);
     window.addEventListener("touchmove", this.touchSwipeHandler);
-
-
   },
   methods: {
     noImageFound() {
@@ -117,21 +126,49 @@ export default {
       }
     },
     startDrag() {
-      this.dragging = true
+      this.dragging = true;
     },
     stopDrag() {
-      this.dragging = false
+      this.dragging = false;
     },
     mouseSwipeHandler(ev) {
-      this.doDrag(ev.clientX);
+      if (this.dragging) {
+        this.touch_loc = ev.clientX;
+        this.doDrag();
+      }
     },
-    touchSwipeHandler(ev){
-      this.doDrag(ev.targetTouches[0].pageX);
+    touchSwipeHandler(ev) {
+      if (this.dragging) {
+        this.touch_loc = ev.targetTouches[0].pageX;
+        this.doDrag();
+      }
     },
-    doDrag(toPos) {
+    doDrag() {
       if (this.dragging) {
         //alert('what? why?')
-        this.$store.commit("update_hotcorner_loc", (toPos + parseFloat(this.right_) - parseFloat(this.size)/2)+ "px");
+        // get actual position of button
+        //let diff = toPos- parseFloat(this.right_) - parseFloat(this.size);
+        //alert(diff);
+        //let maxPos =  window.innerWidth - parseFloat(this.right_) - parseFloat(this.size)/2 - parseFloat(this.parentMarginTop)*2.4;
+        
+        if (!(this.touch_loc > this.draggable_maxPos)) {
+          this.$store.commit(
+            "update_hotcorner_loc",
+            this.touch_loc +
+              parseFloat(this.right_) -
+              parseFloat(this.size) / 2 +
+              "px"
+          );
+        }
+        if (this.touch_loc + this.$store.state.hotcorner_expandedMagnetRange > this.draggable_maxPos) {
+          if (!this.$store.state.hotcorner_expandedMagnet) {
+            this.$store.commit("update_hotcorner_expandedMagnet", true);
+          }
+        } else {
+          if (this.$store.state.hotcorner_expandedMagnet) {
+            this.$store.commit("update_hotcorner_expandedMagnet", false);
+          }
+        }
       }
     }
   },

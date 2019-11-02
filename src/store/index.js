@@ -11,7 +11,8 @@ export default new Vuex.Store({
         window_height: window.innerHeight + 'px',
         window_width: window.innerWidth + 'px',
         hotcorner_loc: '0px',
-
+        hotcorner_expandedMagnet: false,
+        hotcorner_expandedMagnetRange: 20
     },
     mutations: {
         update_window_height(state, val) {
@@ -22,6 +23,9 @@ export default new Vuex.Store({
         },
         update_hotcorner_loc(state, val) {
             state.hotcorner_loc = val;
+        },
+        update_hotcorner_expandedMagnet(state, val) {
+            state.hotcorner_expandedMagnet = val;
         }
     },
     actions: {

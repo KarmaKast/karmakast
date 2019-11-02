@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       HotCorner_base_zIndex: 40,
-      HotCorner_size: "54px", // keep it to odd numbers
+      HotCorner_size: "60px", // keep it to odd numbers
       theme: "auto", // TODO
       window_height: this.$store.state.window_height
     };

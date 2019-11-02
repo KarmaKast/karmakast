@@ -6,7 +6,6 @@
       :parentMargin="margin"
       :hotCornerLoc="location"
       :insidePaddingPercent="16"
-      :window_width="this.$store.state.window_width"
     />
     <div id="SliderNavbar"></div>
   </div>

@@ -47,10 +47,12 @@ export default {
     zIndex: Number,
     parentMargin: String,
     hotCornerLoc: String,
-    insidePaddingPercent: Number,
-    window_width: String
+    insidePaddingPercent: Number
   },
   computed: {
+    window_width: function() {
+      return this.$store.state.window_width;
+    },
     spot_top_margin: function() {
       return (
         (
@@ -123,12 +125,23 @@ export default {
     },
     button_positions: function() {
       let num = 3;
-      let positions = ['0px'];
-      for (let i=1; i<num; i++) {
-        let position = (parseFloat(positions[i-1])+parseFloat(this.height)+this.buttonspots_spacing)+'px';
-        positions.push(position)
+      let positions = ["0px"];
+      for (let i = 1; i < num; i++) {
+        let position =
+          parseFloat(positions[i - 1]) +
+          parseFloat(this.height) +
+          this.buttonspots_spacing +
+          "px";
+        positions.push(position);
       }
       return positions;
+    },
+    curr_full_loc: function() {
+      let curr_full_loc_ =
+        parseFloat(this.$store.state.hotcorner_loc) +
+        parseFloat(this.height) +
+        parseFloat(this.spot_top_margin) * 2.4;
+      return curr_full_loc_;
     }
   },
   data: function() {
@@ -146,6 +159,26 @@ export default {
       swipe_loc: "0px",
       buttonspots_spacing: 12
     };
+  },
+  watch: {
+    window_width: function() {
+      if (this.curr_full_loc > parseFloat(this.window_width)) {
+        let reset_loc =
+          parseFloat(this.window_width) -
+          parseFloat(this.height) -
+          parseFloat(this.spot_top_margin) * 2.4;
+        this.$store.commit("update_hotcorner_loc", reset_loc + "px");
+        //alert("change detected");
+      } else {
+        if (this.$store.state.hotcorner_expandedMagnet) {
+          let reset_loc =
+          parseFloat(this.window_width) -
+          parseFloat(this.height) -
+          parseFloat(this.spot_top_margin) * 2.4;
+          this.$store.commit("update_hotcorner_loc", reset_loc + "px");
+        }
+      }
+    }
   },
   created: function() {},
   destroyed: function() {},
