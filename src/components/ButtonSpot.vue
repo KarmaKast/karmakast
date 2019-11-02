@@ -1,6 +1,6 @@
 <template>
   <div class="ButtonSpot" :class="{active: isactive}" :style="this.Bttn_Spot_styleObj">
-    <button :style="{zIndex: zIndex+2}" @mouseenter="this.setfocus" @mouseleave="this.setfocus"></button>
+    <button :style="{zIndex: zIndex+2}" @mouseenter="this.setfocus" @mouseleave="this.setfocus" ></button>
     <img :style="this.ImgSrc_styleObj" :src="img_src_" @error="noImageFound" />
   </div>
 </template>
@@ -101,6 +101,11 @@ export default {
     },
     buttonclicked() {
       alert("button is clicked");
+    },
+    swipeHandleRight(direction, ev) {
+      // update the location computed data in HotCorner Component
+      alert("swipe detected" + direction + ev);
+      this.swipe_loc = ev.targetTouches[0];
     }
   },
   watch: {

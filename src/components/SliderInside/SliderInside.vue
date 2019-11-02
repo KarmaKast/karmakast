@@ -1,6 +1,5 @@
 <template>
   <div id="SliderInside" :style="{'width': window_width, 'height':height}">
-
     <button-spot
       id="logo"
       :size="height"
@@ -29,8 +28,8 @@
       :parentMarginTop="spot_top_margin"
     />
     <div id="SliderInside-bg" :style="{zIndex: zIndex}">
-      <div :style="Object.assign({}, this.bg_styles[0],this.bg_styles[2])"></div>
-      <div :style="Object.assign({}, this.bg_styles[1],this.bg_styles[2])"></div>
+      <div :style="bg_styles[0]"></div>
+      <div :style="bg_styles[1]"></div>
     </div>
   </div>
 </template>
@@ -79,7 +78,7 @@ export default {
       let radius = (parseFloat(this.bg_height) / 2).toString() + "px ";
       return radius;
     },
-    bg_right_: function() {
+    bg_left_: function() {
       return (
         parseFloat(this.window_width) -
         parseFloat(this.height) -
@@ -90,7 +89,7 @@ export default {
       );
     },
     bg_styles: function() {
-      return [
+      let styles_ = [
         {
           zIndex: this.zIndex + 1,
           backgroundColor: this.bg_colors[0] + "" + 1 * this.bg_opacity + ")"
@@ -112,10 +111,15 @@ export default {
         {
           width: "100%",
           position: "fixed",
-          right: this.bg_right_,
+          right: this.bg_left_,
           borderRadius: "0% " + this.bg_radius_ + this.bg_radius_ + "0%",
           height: this.bg_height
         }
+      ];
+
+      return [
+        Object.assign({}, styles_[0], styles_[2]),
+        Object.assign({}, styles_[1], styles_[2])
       ];
     },
     bg_drag: function() {
@@ -126,7 +130,7 @@ export default {
           "px",
         bottom: "-" + parseFloat(this.spot_top_margin) * 5 + "px"
       };
-    },
+    }
   },
   data: function() {
     return {
@@ -145,13 +149,7 @@ export default {
   },
   created: function() {},
   destroyed: function() {},
-  methods: {
-    swipeHandleRight(direction, ev) {
-      // update the location computed data in HotCorner Component
-      alert("swipe detected" + direction + ev);
-      this.swipe_loc = ev.targetTouches[0];
-    }
-  }
+  methods: {}
 };
 </script>
 
