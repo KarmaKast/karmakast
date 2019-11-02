@@ -10,6 +10,7 @@ export default new Vuex.Store({
     state: {
         window_height: window.innerHeight + 'px',
         window_width: window.innerWidth + 'px',
+        hotcorner_loc: '0px',
 
     },
     mutations: {
@@ -18,6 +19,9 @@ export default new Vuex.Store({
         },
         update_window_width(state, val) {
             state.window_width = val;
+        },
+        update_hotcorner_loc(state, val) {
+            state.hotcorner_loc = val;
         }
     },
     actions: {

@@ -1,6 +1,11 @@
 <template>
   <div class="ButtonSpot" :class="{active: isactive}" :style="this.Bttn_Spot_styleObj">
-    <button :style="{zIndex: zIndex+2}" @mouseenter="this.setfocus" @mouseleave="this.setfocus" ></button>
+    <button
+      ref="bttn"
+      :style="{zIndex: zIndex+2}"
+      @mouseenter="this.setfocus_toggle"
+      @mouseleave="this.setfocus_toggle"
+    ></button>
     <img :style="this.ImgSrc_styleObj" :src="img_src_" @error="noImageFound" />
   </div>
 </template>
@@ -23,8 +28,10 @@ export default {
       isactive: false,
       hovered_counter: 0,
       img_src_error: false,
+      dragging: false,
       button_isfocused: false,
-      defalut_icon_src: require("@/assets/action_add_1.svg")
+      defalut_icon_src: require("@/assets/action_add_1.svg"),
+      touch_loc: "0px"
     };
   },
   computed: {
@@ -72,19 +79,22 @@ export default {
       return {};
     }
   },
-  created: function() {},
+  mounted: function() {
+    /*window.addEventListener("mousedown", this.buttonclick_toggle);
+    window.addEventListener("mouseup", this.buttonclick_toggle);
+    window.addEventListener("mousemove", this.swipeHandler);*/
+
+    this.$el.addEventListener("mousedown", this.startDrag);
+    window.addEventListener("mouseup", this.stopDrag);
+    window.addEventListener("mousemove", this.mouseSwipeHandler);
+
+    this.$el.addEventListener("touchstart", this.startDrag);
+    window.addEventListener("touchend", this.stopDrag);
+    window.addEventListener("touchmove", this.touchSwipeHandler);
+
+
+  },
   methods: {
-    setfocus() {
-      if (this.button_isfocused) {
-        this.button_isfocused = false;
-        /*document.body.style.background =
-        ("linear-gradient(45deg, rgb(255, 20, 50), rgb(202, 200, 18))");*/
-      } else {
-        this.button_isfocused = true;
-        /*document.body.style.background =
-        ("linear-gradient(45deg, rgb(202, 200, 18), rgb(255, 20, 50))");*/
-      }
-    },
     noImageFound() {
       this.img_src_error = true;
       //Object.assign({},this.style_obj,{display:'none'});
@@ -99,8 +109,32 @@ export default {
         return "initial";
       }
     },
-    buttonclicked() {
-      alert("button is clicked");
+    setfocus_toggle() {
+      if (this.button_isfocused) {
+        this.button_isfocused = false;
+      } else {
+        this.button_isfocused = true;
+      }
+    },
+    startDrag() {
+      this.dragging = true
+    },
+    stopDrag() {
+      this.dragging = false
+    },
+    mouseSwipeHandler(ev) {
+      //alert("swipe detected" + ev.targetTouches[0]);
+      //this.touch_loc = "swipe detected" + ev.clientX;
+      if (this.dragging) {
+        //alert('what? why?')
+        this.$store.commit("update_hotcorner_loc", (ev.clientX - parseFloat(this.size)/2)+ "px");
+      }
+    },
+    touchSwipeHandler(ev){
+      if (this.dragging) {
+        //alert('what? why?')
+        this.$store.commit("update_hotcorner_loc", (ev.targetTouches[0].pageX - parseFloat(this.size)/2)+ "px");
+      }
     },
     swipeHandleRight(direction, ev) {
       // update the location computed data in HotCorner Component

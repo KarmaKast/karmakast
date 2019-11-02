@@ -30,7 +30,7 @@ export default {
       //return this.$Store.state.window;
     },*/
     location: function() {
-      return "150px";
+      return this.$store.state.hotcorner_loc;
     },
     styleObj: function() {
       return {

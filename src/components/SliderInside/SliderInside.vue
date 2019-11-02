@@ -78,16 +78,6 @@ export default {
       let radius = (parseFloat(this.bg_height) / 2).toString() + "px ";
       return radius;
     },
-    bg_left_: function() {
-      return (
-        parseFloat(this.window_width) -
-        parseFloat(this.height) -
-        parseFloat(this.spot_top_margin) -
-        parseFloat(this.parentMargin) -
-        parseFloat(this.hotCornerLoc) +
-        "px"
-      );
-    },
     bg_styles: function() {
       let styles_ = [
         {
@@ -110,8 +100,8 @@ export default {
         },
         {
           width: "100%",
-          position: "fixed",
-          right: this.bg_left_,
+          position: "absolute",
+          left: parseFloat(this.spot_top_margin) + "px",
           borderRadius: "0% " + this.bg_radius_ + this.bg_radius_ + "0%",
           height: this.bg_height
         }
