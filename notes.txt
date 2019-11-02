@@ -1,3 +1,0 @@
-generate sha:
-    cat jquery-3.4.1.js | openssl dgst -sha384 -binary | openssl base64 -A
-    
