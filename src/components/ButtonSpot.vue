@@ -31,11 +31,13 @@ export default {
       dragging: false,
       button_isfocused: false,
       defalut_icon_src: require("@/assets/action_add_1.svg"),
-      touch_loc: "0px",
-      draggable_maxPos : window.innerWidth - parseFloat(this.right_) - parseFloat(this.size)/2 - parseFloat(this.parentMarginTop)*2.4,
+      touch_loc: 0
     };
   },
   computed: {
+    window_width: function() {
+      return this.$store.state.window_width;
+    },
     img_src_: function() {
       if (this.img_src_error == true) {
         return this.defalut_icon_src;
@@ -78,6 +80,14 @@ export default {
     },
     size_: function() {
       return {};
+    },
+    draggable_maxPos: function() {
+      return (
+        parseFloat(this.window_width) -
+        parseFloat(this.right_) -
+        parseFloat(this.size) / 2 -
+        parseFloat(this.parentMarginTop) * 2.4
+      );
     }
   },
   mounted: function() {
@@ -122,22 +132,31 @@ export default {
       this.dragging = false;
     },
     mouseSwipeHandler(ev) {
-      this.doDrag(ev.clientX);
+      if (this.dragging) {
+        this.touch_loc = ev.clientX;
+        this.doDrag();
+      }
     },
     touchSwipeHandler(ev) {
-      this.doDrag(ev.targetTouches[0].pageX);
+      if (this.dragging) {
+        this.touch_loc = ev.targetTouches[0].pageX;
+        this.doDrag();
+      }
     },
-    doDrag(toPos) {
+    doDrag() {
       if (this.dragging) {
         //alert('what? why?')
         // get actual position of button
         //let diff = toPos- parseFloat(this.right_) - parseFloat(this.size);
         //alert(diff);
         //let maxPos =  window.innerWidth - parseFloat(this.right_) - parseFloat(this.size)/2 - parseFloat(this.parentMarginTop)*2.4;
-        if (!(toPos > this.draggable_maxPos)) {
+        if (!(this.touch_loc > this.draggable_maxPos)) {
           this.$store.commit(
             "update_hotcorner_loc",
-            toPos + parseFloat(this.right_) - parseFloat(this.size) / 2 + "px"
+            this.touch_loc +
+              parseFloat(this.right_) -
+              parseFloat(this.size) / 2 +
+              "px"
           );
         }
       }
@@ -148,7 +167,7 @@ export default {
       if (this.button_isfocused === true) {
         // increase size of button and img and reposition them
       }
-    }
+    },
   }
 };
 </script>
